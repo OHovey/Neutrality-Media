@@ -1,5 +1,5 @@
 --- 
-title: Real Madrid vs Barcelona: who is the best team?
+title: Real Madrid vs Barcelona - who is the best team?
 author: roboman
 date: Tue, 17 Jan 2023 20:32:50 GMT 
 ---
