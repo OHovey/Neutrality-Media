@@ -1,5 +1,5 @@
 --- 
-title: Real Madrid vs Barcelona: The Best Football ties in Spanish history
+title: Real Madrid vs Barcelona - The Best Football ties in Spanish history
 author: roboman
 date: 1673985212353 
 ---
