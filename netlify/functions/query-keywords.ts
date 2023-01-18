@@ -74,67 +74,20 @@ interface resultProperties {
     OUTPUT: Array<string>
 }
 const myHandler: Handler = async (event: HandlerEvent, context: HandlerContext) => {
-    console.log("Received event:", event);
+    console.log("Received event:");
 
-    const result: resultProperties = await axios.get('https://api.apify.com/v2/actor-tasks/hooli/google-trending-searches/run-sync?token=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', {
+    const result = await axios.get('https://api.apify.com/v2/actor-tasks/VncdzeYjbYNubPpkY/run-sync?token=apify_api_FpKFZk1nVdehSrF7HedZ8x7Cqxdnzp0T4bhK', {
         headers: {
             "Content-Type": "application/json"
         }
+    }).catch(err => {
+        console.log("error: " + err)
     })
 
-    const articles = {};
-    result.OUTPUT.map( async term => {
+    // @ts-ignore
+    // console.log(result);
 
-        const headline: string = await fetchHeadline(term);
-        const article = await fetchArticleContent(term, headline);
-
-        articles[headline] = article;
-    })
-    
-    Object.keys(articles).map( async articleTitle => {
-        
-        const title = articleTitle.split(' ').join('-');
-
-        fs.writeFileSync(`${title}.md`, `# ${articleTitle}`);
-        fs.appendFileSync(`${title}.md`, `# ${articles[articleTitle]}`);
-        const fileContent = fs.readFileSync(`${title}`).toString('base64');
-
-        const config = {
-            headers: {
-                'Authorization': 'Token YOUR_PERSONAL_ACCESS_TOKEN',
-                'Content-Type': 'application/json'
-            }
-        };
-
-        const repository = 'OHovey/NeutralityNews';
-
-        try {
-
-            const response = await axios.put(`https://api.github.com/repos/${repository}/src/data/articles/${title}`, {
-                message: `uploaded new article: "${title}.md"`,
-                content: fileContent
-            }, config);
-
-            fs.unlinkSync(title)
-
-        } catch (error) {
-            console.log(`An error ocurred uploading file ${title} : ${error}`);
-        }
-    })
-
-    axios.post('https://api.openai.com/v1/completions', {
-        "model": "text-ada-001",
-        "prompt": "say hello",
-        "temperature": 0
-    }, {
-        headers: {
-            "Authorization": "Bearer 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"
-        }
-    }).then(function (response) {
-        console.log(JSON.stringify(response.data));
-    }).catch(function (error) {
-        console.log(error);
-    });
+    // return;
 
     return {
         statusCode: 200,
