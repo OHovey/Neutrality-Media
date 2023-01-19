@@ -21842,41 +21842,36 @@ exports.handler = async (event) => {
   const { data: { login } } = await octokit.rest.users.getAuthenticated();
   let articles = {};
   const querys = [...new Set(result.data.filter((query) => query.hasOwnProperty("parentQuery")).map((query) => query.parentQuery))];
-  (async () => {
-    const term = querys[0];
-    let headline = (await fetchHeadline(term)).replace("\n\n", "").replace(":", " -");
-    let article = await fetchArticleContent(term, headline);
-    const timestamp = new Date().toUTCString();
-    const author = "roboman";
-    const metaData = `---
+  const term = querys[0];
+  let headline = (await fetchHeadline(term)).replace("\n\n", "").replace(":", " -");
+  let article = await fetchArticleContent(term, headline);
+  const timestamp = new Date().toUTCString();
+  const author = "roboman";
+  const metaData = `---
 title: ${headline}
 author: ${author}
 date: ${timestamp}
 ---
 `;
-    article = `${metaData}${article}`;
-    articles[headline] = article;
-    console.log("articleHeadline: " + headline);
-  })().then((_) => {
-    Object.keys(articles).map(async (articleTitle) => {
-      console.log("GOT HERE");
-      const title = articleTitle.split(" ").join("-");
-      await octokit.request(`PUT /repos/OHovey/Neutrality-Media/contents/src/data/articles/${title}.md`, {
-        owner: "OHovey",
-        repo: "Neutrality-Media",
-        path: `/src/data/articles/${title}.md`,
-        message: `created new article: ${title}`,
-        committer: {
-          name: "Oliver Hovey",
-          email: "olliehovey@gmail.com"
-        },
-        content: Buffer.from(articles[articleTitle]).toString("base64")
-      }).then((res) => {
-        console.log(res);
-      }).catch((err) => {
-        console.error(err);
-      });
-    });
+  article = `${metaData}${article}`;
+  articles[headline] = article;
+  console.log("articleHeadline: " + headline);
+  console.log("GOT HERE");
+  const title = headline.split(" ").join("-");
+  await octokit.request(`PUT /repos/OHovey/Neutrality-Media/contents/src/data/articles/${title}.md`, {
+    owner: "OHovey",
+    repo: "Neutrality-Media",
+    path: `/src/data/articles/${title}.md`,
+    message: `created new article: ${title}`,
+    committer: {
+      name: "Oliver Hovey",
+      email: "olliehovey@gmail.com"
+    },
+    content: Buffer.from(articles[headline]).toString("base64")
+  }).then((res) => {
+    console.log(res);
+  }).catch((err) => {
+    console.error(err);
   });
 };
 /*!

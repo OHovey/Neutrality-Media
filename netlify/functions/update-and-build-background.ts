@@ -140,76 +140,117 @@ exports.handler = async (event) => {
     //     })
     // })
 
-    (async () => {
+    const term: string = querys[0];
 
-        const term: string = querys[0];
+    let headline: string = (await fetchHeadline(term)).replace("\n\n", "").replace(":", " -"); 
 
-        let headline: string = (await fetchHeadline(term)).replace("\n\n", "").replace(":", " -"); 
+    let article = await fetchArticleContent(term, headline);
 
-        let article = await fetchArticleContent(term, headline);
+    // declare some details for the markdown
+    const timestamp = new Date().toUTCString();
+    const author = "roboman";
+    const metaData = `---\ntitle: ${headline}\nauthor: ${author}\ndate: ${timestamp}\n---\n`;
 
-        // declare some details for the markdown
-        const timestamp = new Date().toUTCString();
-        const author = "roboman";
-        const metaData = `---\ntitle: ${headline}\nauthor: ${author}\ndate: ${timestamp}\n---\n`;
+    article = `${metaData}${article}`
 
-        article = `${metaData}${article}`
+    articles[headline] = article;
 
-        articles[headline] = article;
-
-        console.log("articleHeadline: " + headline);
-
-    })().then( _ => {
-        Object.keys(articles).map( async articleTitle => {
+    console.log("articleHeadline: " + headline);
 
 
+    console.log("GOT HERE");
 
-            console.log("GOT HERE");
+    const title = headline.split(' ').join('-');
 
-            const title = articleTitle.split(' ').join('-');
+    await octokit.request(`PUT /repos/OHovey/Neutrality-Media/contents/src/data/articles/${title}.md`, {
+        owner: 'OHovey',
+        repo: 'Neutrality-Media',
+        path: `/src/data/articles/${title}.md`,
+        message: `created new article: ${title}`, // if uploading multiple files again... upload commit message with "[skip ci]" for all but last.
+        committer: {
+            name: 'Oliver Hovey',
+            email: 'olliehovey@gmail.com'
+        },
+        content: Buffer.from(articles[headline]).toString('base64')
+    }).then( res => {
 
-            await octokit.request(`PUT /repos/OHovey/Neutrality-Media/contents/src/data/articles/${title}.md`, {
-                owner: 'OHovey',
-                repo: 'Neutrality-Media',
-                path: `/src/data/articles/${title}.md`,
-                message: `created new article: ${title}`, // if uploading multiple files again... upload commit message with "[skip ci]" for all but last.
-                committer: {
-                    name: 'Oliver Hovey',
-                    email: 'olliehovey@gmail.com'
-                },
-                content: Buffer.from(articles[articleTitle]).toString('base64')
-            }).then( res => {
+        console.log(res);
+    }).catch( err => {
 
-                console.log(res);
-            }).catch( err => {
-
-                console.error(err);
-            })
-            })
-    
-            // rebuild the site via netlify api
-            // axios.post(`https://api.netlify.com/api/v1/oauth/tickets`, {
-            //     client_id: process.env.NETLIFY_CLIENT_ID
-            // }).then( ticket => {
-
-            //     console.log("ticket: " + ticket);
-                
-            //     axios.post(`https://api.netlify.com/api/v1/sites/${process.env.NETLIFY_SITE_ID}/deploys`, {
-            //         files: {},
-            //         draft: false,
-            //         async: true,
-            //         functions: {},
-            //         functions_scedules: [],
-            //         branch: "main",
-            //         framework: "gatsby"
-            //     },
-            //     {
-            //         Headers: {
-            //             "Authorization": `Bearer ${process.env.NETLIFY_PERSONAL_ACCESS_TOKEN}`
-            //         }
-            //     })
-            // })
+        console.error(err);
     })
+            
+
+    // (async () => {
+
+    //     const term: string = querys[0];
+
+    //     let headline: string = (await fetchHeadline(term)).replace("\n\n", "").replace(":", " -"); 
+
+    //     let article = await fetchArticleContent(term, headline);
+
+    //     // declare some details for the markdown
+    //     const timestamp = new Date().toUTCString();
+    //     const author = "roboman";
+    //     const metaData = `---\ntitle: ${headline}\nauthor: ${author}\ndate: ${timestamp}\n---\n`;
+
+    //     article = `${metaData}${article}`
+
+    //     articles[headline] = article;
+
+    //     console.log("articleHeadline: " + headline);
+
+    // })().then( _ => {
+    //     Object.keys(articles).map( async articleTitle => {
+
+
+
+    //         console.log("GOT HERE");
+
+    //         const title = articleTitle.split(' ').join('-');
+
+    //         await octokit.request(`PUT /repos/OHovey/Neutrality-Media/contents/src/data/articles/${title}.md`, {
+    //             owner: 'OHovey',
+    //             repo: 'Neutrality-Media',
+    //             path: `/src/data/articles/${title}.md`,
+    //             message: `created new article: ${title}`, // if uploading multiple files again... upload commit message with "[skip ci]" for all but last.
+    //             committer: {
+    //                 name: 'Oliver Hovey',
+    //                 email: 'olliehovey@gmail.com'
+    //             },
+    //             content: Buffer.from(articles[articleTitle]).toString('base64')
+    //         }).then( res => {
+
+    //             console.log(res);
+    //         }).catch( err => {
+
+    //             console.error(err);
+    //         })
+    //         })
+    
+    //         // rebuild the site via netlify api
+    //         // axios.post(`https://api.netlify.com/api/v1/oauth/tickets`, {
+    //         //     client_id: process.env.NETLIFY_CLIENT_ID
+    //         // }).then( ticket => {
+
+    //         //     console.log("ticket: " + ticket);
+                
+    //         //     axios.post(`https://api.netlify.com/api/v1/sites/${process.env.NETLIFY_SITE_ID}/deploys`, {
+    //         //         files: {},
+    //         //         draft: false,
+    //         //         async: true,
+    //         //         functions: {},
+    //         //         functions_scedules: [],
+    //         //         branch: "main",
+    //         //         framework: "gatsby"
+    //         //     },
+    //         //     {
+    //         //         Headers: {
+    //         //             "Authorization": `Bearer ${process.env.NETLIFY_PERSONAL_ACCESS_TOKEN}`
+    //         //         }
+    //         //     })
+    //         // })
+    // })
 
     // @ts-ignore
     // await Promise.all(querys.map( async (term: string) => {
