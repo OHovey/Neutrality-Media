@@ -156,6 +156,9 @@ exports.handler = async (event) => {
         article = `${metaData}${article}`
 
         articles[headline] = article;
+
+        console.log("articleHeadline: " + headline);
+
     })().then( _ => {
         Object.keys(articles).map( async articleTitle => {
 
