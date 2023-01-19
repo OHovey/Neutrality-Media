@@ -140,8 +140,6 @@ exports.handler = async (event) => {
     //     })
     // })
 
-    console.log("GOT HERE");
-
     (async () => {
 
         const term: string = querys[0];
@@ -161,7 +159,9 @@ exports.handler = async (event) => {
     })().then( _ => {
         Object.keys(articles).map( async articleTitle => {
 
-            // console.log("GOT HERE");
+
+
+            console.log("GOT HERE");
 
             const title = articleTitle.split(' ').join('-');
 

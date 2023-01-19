@@ -21842,7 +21842,6 @@ exports.handler = async (event) => {
   const { data: { login } } = await octokit.rest.users.getAuthenticated();
   let articles = {};
   const querys = [...new Set(result.data.filter((query) => query.hasOwnProperty("parentQuery")).map((query) => query.parentQuery))];
-  console.log("GOT HERE");
   (async () => {
     const term = querys[0];
     let headline = (await fetchHeadline(term)).replace("\n\n", "").replace(":", " -");
@@ -21859,6 +21858,7 @@ date: ${timestamp}
     articles[headline] = article;
   })().then((_) => {
     Object.keys(articles).map(async (articleTitle) => {
+      console.log("GOT HERE");
       const title = articleTitle.split(" ").join("-");
       await octokit.request(`PUT /repos/OHovey/Neutrality-Media/contents/src/data/articles/${title}.md`, {
         owner: "OHovey",
