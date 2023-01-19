@@ -32,8 +32,11 @@ const IndexPage: React.FC<PageProps<HomeProps>> = ({ data }) => {
       <section className="py-24">
             <div className="container px-4 mx-auto">
                 <div className="flex flex-wrap -mx-4 mb-20 items-center">
-                <div className="w-full md:w-1/2 px-4 mb-6 md:mb-0">
-                    <h2 className="mx-20 text-5xl md:text-6xl font-heading">Latest</h2>
+                <div className="w-full md:w-full px-4 mb-6 md:mb-0 flex justify-between">
+                    <h2 className="mx-20 text-5xl md:text-6xl font-heading inline">Latest</h2>
+                    <GatsbyLink className="relative bg-black px-6 w-36 mx-20" to="/Articles">
+                      <p className="text-white font-bold inline absolute top-1/2 hover:underline transition-all ease-in-out duration-500 underline-offset-4" style={{ transform: "translate(0, -50%)" }}>More Articles</p>
+                    </GatsbyLink>
                 </div>
                 <div className="w-full md:w-1/2 px-4">
                     {/* <p className="max-w-lg leading-8">If you have ever wondered how to develop your brand, this is the place for you. Take a big step forward in growing your business.</p> */}

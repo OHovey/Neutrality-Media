@@ -7,22 +7,65 @@ import Moment from 'react-moment';
 import Template from '../base';
 
 
+type Tag = {
+    type: string,
+    tagName: string,
+    properties: object,
+    children: Array<Tag>,
+    value?: string
+}
 type Article = {
     frontmatter: {
         title: string,
         author: string,
         date: string
     },
-    excerpt: string
+    html: string,
+    htmlAst: {
+        children: Array<Tag>
+    }
 }
 interface ArticleProps {
     markdownRemark: Article
 }
 const Article = ({ data }: PageProps<ArticleProps>) => {
 
+    const [articleContent, setArticleContent] = React.useState<string>('');
+
+
     React.useEffect(() => {
 
-        console.log(data);
+        let content: string = "";
+
+        data.markdownRemark.htmlAst.children.forEach( tag => {
+
+            // console.log(tag.children[0])
+
+            if (tag.hasOwnProperty("children")) {
+
+                // @ts-ignore
+                console.log(tag.children[0].value?.split('').length)
+
+                // @ts-ignore
+                if (tag.children[0].value?.split('').length < 80) {
+                    content += `<h2 class="font-bold mb-6 mt-10">${tag.children[0].value}</h2>`;
+    
+                } else {
+                    switch (tag.tagName) {
+                        case 'p':
+                            content += `<p class="mb-2">${tag.children[0].value}</p>`;
+                            break;
+        
+                        case 'h2':
+                            content += `<h2 class="font-bold">${tag.children[0].value}</h2>`
+                            break;
+        
+                    }
+                }
+            }
+        })
+
+        setArticleContent(content);
     })
 
     return (
@@ -33,11 +76,10 @@ const Article = ({ data }: PageProps<ArticleProps>) => {
                         <div className="py-24 max-w-4xl">
                             <p className="text-indigo-500 inline">Published </p><Moment className="text-indigo-500" date={data.markdownRemark.frontmatter.date} format="D MMM YYYY" />
                             <h2 className="text-4xl md:text-5xl font-heading mt-4 mb-6">{data.markdownRemark.frontmatter.title}</h2>
-                            <p className="leading-8">These types of questions led me to miss numerous deadlines, and I wasted time and energy in back-and-forth communication. Sadly, this situation could have been avoided if the wireframes had provided enough detail.</p>
-                        </div>
-                        <img className="block w-full mb-12" src="https://images.unsplash.com/photo-1494500764479-0c8f2919a3d8?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=870&q=80" alt="" />
-                        <div>
-                            {data.markdownRemark.excerpt}
+                            <div 
+                                className='article-content'
+                                dangerouslySetInnerHTML={{ __html: articleContent }}
+                            />
                         </div>
                     </div>
                 </div>
@@ -54,7 +96,8 @@ export const query = graphql`
               date
               title
             }
-            rawMarkdownBody
+            html
+            htmlAst
           }
     }
 `

@@ -14,10 +14,10 @@ const Footer = () => {
                 </div>
                 <div className="w-full md:w-3/5 px-4 mb-6 md:mb-0">
                     <ul className="md:flex items-center justify-center">
-                    <li className="mb-6 md:mb-0 md:mr-12"><a className="inline-block font-bold text-sm text-white hover:text-gray-200" href="#">Hello</a></li>
-                    <li className="mb-6 md:mb-0 md:mr-12"><a className="inline-block font-bold text-sm text-white hover:text-gray-200" href="#">Story</a></li>
-                    <li className="mb-6 md:mb-0 md:mr-12"><a className="inline-block font-bold text-sm text-white hover:text-gray-200" href="#">About us</a></li>
-                    <li><a className="inline-block font-bold text-sm text-white hover:text-gray-200" href="#">Services</a></li>
+                    {/* <li className="mb-6 md:mb-0 md:mr-12"><a className="inline-block font-bold text-sm text-white hover:text-gray-200" href="#">Hello</a></li> */}
+                    {/* <li className="mb-6 md:mb-0 md:mr-12"><a className="inline-block font-bold text-sm text-white hover:text-gray-200" href="#">Story</a></li> */}
+                    <li className="mb-6 md:mb-0 md:mr-12"><a className="inline-block font-bold text-sm text-white hover:text-gray-200" href="#">About this site</a></li>
+                    <li><a className="inline-block font-bold text-sm text-white hover:text-gray-200" href="#">Privacy Policy</a></li>
                     </ul>
                 </div>
                 <div className="w-full md:w-1/5 px-4">
