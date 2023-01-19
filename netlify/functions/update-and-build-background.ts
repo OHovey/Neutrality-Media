@@ -57,14 +57,20 @@ exports.handler = async (event) => {
         console.log("error: " + err)
     })
 
+    console.log('hi 1');
+
     const octokit = new Octokit({ auth: process.env.GITHUB_ACCESS_TOKEN });
     const { data: { login } } = await octokit.rest.users.getAuthenticated();
+
+    console.log("hi 2");
 
     let articles = {};
 
     // @ts-ignore
     const querys: Array<string> = [...new Set(result.data.filter( query => query.hasOwnProperty("parentQuery") ).map( query => query.parentQuery))];
     
+
+    console.log("hi 3")
     // Promise.resolve( async () => {
 
     //     let queryIndex = 0;
@@ -146,10 +152,13 @@ exports.handler = async (event) => {
 
     let article = await fetchArticleContent(term, headline);
 
+    console.log('hi 4')
     // declare some details for the markdown
     const timestamp = new Date().toUTCString();
     const author = "roboman";
     const metaData = `---\ntitle: ${headline}\nauthor: ${author}\ndate: ${timestamp}\n---\n`;
+
+    console.log("hi 5");
 
     article = `${metaData}${article}`
 

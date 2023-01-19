@@ -21838,13 +21838,17 @@ exports.handler = async (event) => {
   }).catch((err) => {
     console.log("error: " + err);
   });
+  console.log("hi 1");
   const octokit = new Octokit({ auth: process.env.GITHUB_ACCESS_TOKEN });
   const { data: { login } } = await octokit.rest.users.getAuthenticated();
+  console.log("hi 2");
   let articles = {};
   const querys = [...new Set(result.data.filter((query) => query.hasOwnProperty("parentQuery")).map((query) => query.parentQuery))];
+  console.log("hi 3");
   const term = querys[0];
   let headline = (await fetchHeadline(term)).replace("\n\n", "").replace(":", " -");
   let article = await fetchArticleContent(term, headline);
+  console.log("hi 4");
   const timestamp = new Date().toUTCString();
   const author = "roboman";
   const metaData = `---
@@ -21853,6 +21857,7 @@ author: ${author}
 date: ${timestamp}
 ---
 `;
+  console.log("hi 5");
   article = `${metaData}${article}`;
   articles[headline] = article;
   console.log("articleHeadline: " + headline);
