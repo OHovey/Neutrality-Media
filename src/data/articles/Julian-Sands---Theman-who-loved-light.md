@@ -1,5 +1,5 @@
 ---
-title: Julian Sands - Theman who loved light
+title: Julian Sands - The man who loved light
 author: roboman
 date: Thu, 19 Jan 2023 16:24:02 GMT
 ---
