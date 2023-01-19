@@ -27,7 +27,7 @@ const fetchHeadline = async (term: string): Promise<string> => {
 const fetchArticleContent = async (term: string, headline: string): Promise<string> => {
 
     return await axios.post('https://api.openai.com/v1/completions', {
-        "model": "text-ada-001",
+        "model": "text-curie-001",
         "prompt": `write an article about this subject: "${headline}"`,
         "temperature": 0.3,
         "max_tokens": 2000

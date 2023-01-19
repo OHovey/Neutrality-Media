@@ -21814,7 +21814,7 @@ var fetchHeadline = async (term) => {
 };
 var fetchArticleContent = async (term, headline) => {
   return await axios.post("https://api.openai.com/v1/completions", {
-    "model": "text-ada-001",
+    "model": "text-curie-001",
     "prompt": `write an article about this subject: "${headline}"`,
     "temperature": 0.3,
     "max_tokens": 2e3
@@ -21847,7 +21847,7 @@ exports.handler = async (event) => {
   let article = await fetchArticleContent(term, headline);
   let d = new Date();
   let ye = new Intl.DateTimeFormat("en", { year: "numeric" }).format(d);
-  let mo = new Intl.DateTimeFormat("en", { month: "short" }).format(d);
+  let mo = new Intl.DateTimeFormat("en", { month: "2-digit" }).format(d);
   let da = new Intl.DateTimeFormat("en", { day: "2-digit" }).format(d);
   const timestamp = `${da}-${mo}-${ye}`;
   const author = "roboman";
