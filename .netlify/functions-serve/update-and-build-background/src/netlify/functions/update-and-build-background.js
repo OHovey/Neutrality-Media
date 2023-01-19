@@ -21803,7 +21803,7 @@ var fetchHeadline = async (term) => {
     "temperature": 0.4
   }, {
     headers: {
-      "Authorization": "Bearer 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"
+      "Authorization": `Bearer ${process.env.OPENAI_AUTH_TOKEN}`
     }
   }).then((response) => {
     return response.data.choices[0].text;
@@ -21820,7 +21820,7 @@ var fetchArticleContent = async (term, headline) => {
     "max_tokens": 2e3
   }, {
     headers: {
-      "Authorization": "Bearer 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"
+      "Authorization": `Bearer ${process.env.OPENAI_AUTH_TOKEN}`
     }
   }).then((response) => {
     return response.data.choices[0].text;
@@ -21831,20 +21831,21 @@ var fetchArticleContent = async (term, headline) => {
 };
 exports.handler = async (event) => {
   console.log("Received event:");
-  const result = await axios.get("https://api.apify.com/v2/actor-tasks/VncdzeYjbYNubPpkY/runs/last/dataset/items?token=apify_api_FpKFZk1nVdehSrF7HedZ8x7Cqxdnzp0T4bhK&status=SUCCEEDED", {
+  const result = await axios.get(`https://api.apify.com/v2/actor-tasks/VncdzeYjbYNubPpkY/runs/last/dataset/items?token=${process.env.APIFY_TOKEN}&status=SUCCEEDED`, {
     headers: {
       "Content-Type": "application/json"
     }
   }).catch((err) => {
     console.log("error: " + err);
   });
-  const octokit = new Octokit({ auth: "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" });
+  const octokit = new Octokit({ auth: process.env.GITHUB_ACCESS_TOKEN });
   const { data: { login } } = await octokit.rest.users.getAuthenticated();
   let articles = {};
   const querys = [...new Set(result.data.filter((query) => query.hasOwnProperty("parentQuery")).map((query) => query.parentQuery))];
-  await Promise.all(querys.map(async (term) => {
-    let headline = await fetchHeadline(term);
-    headline = headline.replace("\n\n", "").replace(":", " -");
+  console.log("GOT HERE");
+  (async () => {
+    const term = querys[0];
+    let headline = (await fetchHeadline(term)).replace("\n\n", "").replace(":", " -");
     let article = await fetchArticleContent(term, headline);
     const timestamp = new Date().toUTCString();
     const author = "roboman";
@@ -21856,14 +21857,14 @@ date: ${timestamp}
 `;
     article = `${metaData}${article}`;
     articles[headline] = article;
-  })).then((_) => {
+  })().then((_) => {
     Object.keys(articles).map(async (articleTitle) => {
       const title = articleTitle.split(" ").join("-");
       await octokit.request(`PUT /repos/OHovey/Neutrality-Media/contents/src/data/articles/${title}.md`, {
         owner: "OHovey",
         repo: "Neutrality-Media",
         path: `/src/data/articles/${title}.md`,
-        message: `created new article: ${title} [skip ci]`,
+        message: `created new article: ${title}`,
         committer: {
           name: "Oliver Hovey",
           email: "olliehovey@gmail.com"
@@ -21872,7 +21873,7 @@ date: ${timestamp}
       }).then((res) => {
         console.log(res);
       }).catch((err) => {
-        console.log(err);
+        console.error(err);
       });
     });
   });

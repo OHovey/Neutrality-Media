@@ -3247,6 +3247,12 @@ var myHandler = async (event, context) => {
     headers: {
       "Content-Type": "application/json"
     }
+  }).then((_) => {
+    import_axios.default.post("https://sprightly-bonbon-6b5065.netlify.app/.netlify/functions/update-and-build-background", {}, {
+      headers: {
+        "Authorization": `Bearer ${process.env.PERSONAL_ACCESS_TOKEN}`
+      }
+    });
   }).catch((err) => {
     console.log("error: " + err);
   });
