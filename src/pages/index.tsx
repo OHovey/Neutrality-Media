@@ -34,7 +34,7 @@ const IndexPage: React.FC<PageProps<HomeProps>> = ({ data }) => {
                 <div className="flex flex-wrap -mx-4 mb-20 items-center">
                 <div className="w-full md:w-full px-4 mb-6 md:mb-0 flex justify-between">
                     <h2 className="mx-20 text-5xl md:text-6xl font-heading inline">Latest</h2>
-                    <GatsbyLink className="relative bg-black px-6 w-36 mx-20" to="/articles">
+                    <GatsbyLink className="relative bg-black px-6 w-36 mx-20" to="/articles/0">
                       <p className="text-white font-bold inline absolute top-1/2 hover:underline transition-all ease-in-out duration-500 underline-offset-4" style={{ transform: "translate(0, -50%)" }}>More Articles</p>
                     </GatsbyLink>
                 </div>

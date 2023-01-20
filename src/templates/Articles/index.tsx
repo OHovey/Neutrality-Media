@@ -19,9 +19,14 @@ interface ArticlesProps {
         totalCount: number
     }
 }
-const Articles = ({ data }: PageProps<ArticlesProps> ) => {
+const Articles = ({ data, pageContext }: PageProps<ArticlesProps> ) => {
 
     const [articles, setArticles] = React.useState<Array<Article>>(data.allMarkdownRemark.nodes);
+    
+    // @ts-ignore
+    const { startIndex } = pageContext;
+
+    console.log(pageContext);
 
     return (
         <Template>
@@ -58,17 +63,19 @@ const Articles = ({ data }: PageProps<ArticlesProps> ) => {
                             ))
                         }
                     </div>
-                    {/* <div className="text-center">
-                        <a className="inline-block px-8 py-3 text-white font-bold bg-black hover:bg-gray-900 transform duration-200" href="#">View more articles</a>
-                    </div> */}
+
                     <div className='flex mx-auto justify-center'>
-                        <GatsbyLink to={`/articles/${window.location.pathname.split('/')[0]}`}>{"<"}</GatsbyLink>
+
+                        
+                        {startIndex > 0 && (
+                            <GatsbyLink to={`/articles/${startIndex - 1}`}>{"<"}</GatsbyLink>
+                        )}
 
                             {(() => {
                               
                               let pages = [];
                               
-                              for (let i = 0; i < data.allMarkdownRemark.totalCount; i++) {
+                              for (let i = 0; i < Math.floor(data.allMarkdownRemark.totalCount / 9) + 1; i++) {
 
                                 const el = (
                                     <div className='inline border-2 border-red-400 p-2 px-3 mx-2 rounded-md'>
@@ -82,7 +89,9 @@ const Articles = ({ data }: PageProps<ArticlesProps> ) => {
                               return pages;
                             })()}
 
-                        <button>{">"}</button>
+                        {Math.floor(data.allMarkdownRemark.totalCount / 9) + 1 > 1 && (
+                            <GatsbyLink to={`/articles/${startIndex + 1}`}>{">"}</GatsbyLink>
+                        )}
                     </div>
                 </div>
             </section>
