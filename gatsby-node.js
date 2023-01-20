@@ -23,6 +23,20 @@ exports.createPages = async ({ graphql, actions }) => {
         `
     )
 
+    const numberOfArticles = Math.floor(result.data.allMarkdownRemark.nodes.length / 9) + 1;
+    const articlesTemplate = path.resolve('src/templates/Articles/index.tsx');
+    for (let i = 0; i < numberOfArticles; i++) {
+        
+        const path = `/articles/${i}`;
+        createPage({
+            path,
+            component: articlesTemplate,
+            context: {
+                startIndex: i
+            }
+        });
+    }
+
     const articleTemplate = path.resolve(`src/templates/Article/index.tsx`);
     result.data.allMarkdownRemark.nodes.map( page => {
 

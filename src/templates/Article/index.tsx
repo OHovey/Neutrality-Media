@@ -75,6 +75,7 @@ const Article = ({ data }: PageProps<ArticleProps>) => {
                     <div className="max-w-6xl mx-auto">
                         <div className="py-24 max-w-4xl">
                             <p className="text-indigo-500 inline">Published </p><Moment className="text-indigo-500" date={data.markdownRemark.frontmatter.date} format="D MMM YYYY" />
+                            <p className='text-indigo-500 inline'> by <strong>{data.markdownRemark.frontmatter.author}</strong></p>
                             <h2 className="text-4xl md:text-5xl font-heading mt-4 mb-6">{data.markdownRemark.frontmatter.title}</h2>
                             <div 
                                 className='article-content'

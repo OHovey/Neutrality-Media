@@ -9,9 +9,9 @@ const Nav = () => {
             <nav className="py-10 bg-black" data-config->
                 <div className="container px-4 mx-auto">
                 <div className="flex items-center justify-between relative">
-                    <GatsbyLink to="/" className="hidden lg:block py-3 px-4 bg-red-500 hover:bg-red-400 transition-colors ease-in-out duration-150">
+                    <GatsbyLink to="/" className="hidden lg:block py-3 px-4 bg-red-500 hover:bg-red-400 border border-white transition-colors ease-in-out duration-150">
                         
-                        <p className='text-heading text-white font-bold'>NEUTRALITY NEWS</p>
+                        <p className='text-heading text-white font-bold'>NEUTRALITY MEDIA</p>
                     </GatsbyLink>
                     <a className="inline-block" href="#">
                         <img src="pstls-assets/logos/pstls-logo-normal-white.svg" alt="" width={116} />
