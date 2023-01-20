@@ -29,7 +29,7 @@ const IndexPage: React.FC<PageProps<HomeProps>> = ({ data }) => {
 
   return (
     <Template>
-      <section className="py-24">
+      <section className="py-24 bg-gradient-to-r from-red-400">
             <div className="container px-4 mx-auto">
                 <div className="flex flex-wrap -mx-4 mb-20 items-center">
                 <div className="w-full md:w-full px-4 mb-6 md:mb-0 flex justify-between">
@@ -76,7 +76,7 @@ const IndexPage: React.FC<PageProps<HomeProps>> = ({ data }) => {
                           </div>
                           <div className="px-4 mb-3">
                           <div className="mb-2 text-indigo-200">
-                              <span>5 min read</span>
+                              <span className="text-indigo-500">5 min read</span>
                               <span className="mx-2">•</span>
                               <span>{article.frontmatter.date}</span>
                           </div>

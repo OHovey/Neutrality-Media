@@ -1,5 +1,5 @@
 import * as React from 'react';
-
+import { Link as GatsbyLink } from 'gatsby';
 
 const Footer = () => {
 
@@ -16,7 +16,11 @@ const Footer = () => {
                     <ul className="md:flex items-center justify-center">
                     {/* <li className="mb-6 md:mb-0 md:mr-12"><a className="inline-block font-bold text-sm text-white hover:text-gray-200" href="#">Hello</a></li> */}
                     {/* <li className="mb-6 md:mb-0 md:mr-12"><a className="inline-block font-bold text-sm text-white hover:text-gray-200" href="#">Story</a></li> */}
-                    <li className="mb-6 md:mb-0 md:mr-12"><a className="inline-block font-bold text-sm text-white hover:text-gray-200" href="#">About this site</a></li>
+                    <li className="mb-6 md:mb-0 md:mr-12">
+                        <GatsbyLink to={`/about-this-site`} className="inline-block font-bold text-sm text-white hover:text-gray-200">
+                            About this site
+                        </GatsbyLink>
+                    </li>
                     <li><a className="inline-block font-bold text-sm text-white hover:text-gray-200" href="#">Privacy Policy</a></li>
                     </ul>
                 </div>
