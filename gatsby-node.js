@@ -32,7 +32,8 @@ exports.createPages = async ({ graphql, actions }) => {
             path,
             component: articlesTemplate,
             context: {
-                startIndex: i
+                startIndex: i,
+                pageTitle: "Neutrality Media - Articles"
             }
         });
     }
@@ -48,7 +49,8 @@ exports.createPages = async ({ graphql, actions }) => {
             path,
             component: articleTemplate,
             context: {
-                articleId: page.id
+                articleId: page.id,
+                pageTitle: page.frontmatter.title
             }
         });
     })

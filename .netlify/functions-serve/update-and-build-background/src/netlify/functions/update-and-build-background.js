@@ -21845,6 +21845,20 @@ exports.handler = async (event) => {
   const term = querys[0];
   let headline = (await fetchHeadline(term)).replace("\n\n", "").replace(":", " -");
   let article = await fetchArticleContent(term, headline);
+  const imageData = await axios.post("https://api.openai.com/v1/images/generations", {
+    prompt: `An image to caption the following headline: ${headline}`,
+    n: 1,
+    size: "1024x1024"
+  }, {
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${process.env.OPENAI_AUTH_TOKEN}`
+    }
+  }).catch((err) => {
+    console.error(err);
+  });
+  const imageUrl = imageData.data.data[0].url;
+  console.log("imageUrl: " + imageUrl);
   let d = new Date();
   let ye = new Intl.DateTimeFormat("en", { year: "numeric" }).format(d);
   let mo = new Intl.DateTimeFormat("en", { month: "2-digit" }).format(d);
@@ -21855,6 +21869,7 @@ exports.handler = async (event) => {
 title: ${headline}
 author: ${author}
 date: ${timestamp}
+imageUrl: ${imageUrl}
 ---
 `;
   article = `${metaData}${article}`;

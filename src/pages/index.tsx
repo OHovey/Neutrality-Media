@@ -1,6 +1,6 @@
 import * as React from "react"
 import { graphql } from 'gatsby';
-import type { HeadFC, PageProps } from "gatsby"
+import type { HeadFC, PageProps, HeadProps } from "gatsby"
 import Template from "../templates/base"
 import { Link as GatsbyLink } from 'gatsby';
 
@@ -95,6 +95,22 @@ const IndexPage: React.FC<PageProps<HomeProps>> = ({ data }) => {
   )
 }
 
+interface HeadParams {
+  pageContext: {
+    pageTitle: string
+  },
+  data: {},
+  params: {},
+  location: {}
+}
+export const Head = ({ location, params, data, pageContext }: HeadParams) => {
+  return (
+    <>
+      <title>{pageContext.pageTitle}</title>
+    </>
+  )
+}
+
 export const query = graphql`
   query HomeQuery {
     allMarkdownRemark(limit: 5, sort: {id: DESC}) {
@@ -111,5 +127,3 @@ export const query = graphql`
 `
 
 export default IndexPage
-
-export const Head: HeadFC = () => <title>Home Page</title>

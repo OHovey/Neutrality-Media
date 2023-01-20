@@ -147,6 +147,26 @@ exports.handler = async (event) => {
 
     let article = await fetchArticleContent(term, headline);
 
+    // generate image
+    const imageData = await axios.post('https://api.openai.com/v1/images/generations', {
+        prompt: `An image to caption the following headline: ${headline}`,
+        n: 1,
+        size: "1024x1024"
+    },{
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${process.env.OPENAI_AUTH_TOKEN}`
+        }
+    }).catch( err => {
+        console.error(err);
+    })
+
+    // console.log(imageData.data.data.url)
+
+    const imageUrl = imageData.data.data[0].url;
+
+    console.log("imageUrl: " + imageUrl)
+
     // declare some details for the markdown
     let d = new Date();
     let ye = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(d);
@@ -154,13 +174,14 @@ exports.handler = async (event) => {
     let da = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(d);
     const timestamp = `${da}-${mo}-${ye}`;
     const author = "roboman";
-    const metaData = `---\ntitle: ${headline}\nauthor: ${author}\ndate: ${timestamp}\n---\n`;
+    const metaData = `---\ntitle: ${headline}\nauthor: ${author}\ndate: ${timestamp}\nimageUrl: ${imageUrl}\n---\n`;
 
     article = `${metaData}${article}`
 
     articles[headline] = article;
 
     const title = headline.split(' ').join('-');
+
 
     await octokit.request(`PUT /repos/OHovey/Neutrality-Media/contents/src/data/articles/${title}.md`, {
         owner: 'OHovey',
