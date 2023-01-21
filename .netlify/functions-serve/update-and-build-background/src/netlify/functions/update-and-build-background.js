@@ -5715,12 +5715,12 @@ var require_lib2 = __commonJS({
       const dest = new URL$1(destination).hostname;
       return orig === dest || orig[orig.length - dest.length - 1] === "." && orig.endsWith(dest);
     };
-    function fetch(url, opts) {
-      if (!fetch.Promise) {
+    function fetch2(url, opts) {
+      if (!fetch2.Promise) {
         throw new Error("native promise missing, set fetch.Promise to your favorite alternative");
       }
-      Body.Promise = fetch.Promise;
-      return new fetch.Promise(function(resolve, reject) {
+      Body.Promise = fetch2.Promise;
+      return new fetch2.Promise(function(resolve, reject) {
         const request = new Request(url, opts);
         const options = getNodeRequestOptions(request);
         const send = (options.protocol === "https:" ? https : http).request;
@@ -5770,7 +5770,7 @@ var require_lib2 = __commonJS({
         req.on("response", function(res) {
           clearTimeout(reqTimeout);
           const headers = createHeadersLenient(res.headers);
-          if (fetch.isRedirect(res.statusCode)) {
+          if (fetch2.isRedirect(res.statusCode)) {
             const location = headers.get("Location");
             let locationURL = null;
             try {
@@ -5832,7 +5832,7 @@ var require_lib2 = __commonJS({
                   requestOpts.body = void 0;
                   requestOpts.headers.delete("content-length");
                 }
-                resolve(fetch(new Request(locationURL, requestOpts)));
+                resolve(fetch2(new Request(locationURL, requestOpts)));
                 finalize();
                 return;
             }
@@ -5892,11 +5892,11 @@ var require_lib2 = __commonJS({
         writeToStream(req, request);
       });
     }
-    fetch.isRedirect = function(code) {
+    fetch2.isRedirect = function(code) {
       return code === 301 || code === 302 || code === 303 || code === 307 || code === 308;
     };
-    fetch.Promise = global.Promise;
-    module2.exports = exports2 = fetch;
+    fetch2.Promise = global.Promise;
+    module2.exports = exports2 = fetch2;
     Object.defineProperty(exports2, "__esModule", { value: true });
     exports2.default = exports2;
     exports2.Headers = Headers;
@@ -6079,8 +6079,8 @@ var require_dist_node5 = __commonJS({
       let headers = {};
       let status;
       let url;
-      const fetch = requestOptions.request && requestOptions.request.fetch || globalThis.fetch || nodeFetch;
-      return fetch(requestOptions.url, Object.assign({
+      const fetch2 = requestOptions.request && requestOptions.request.fetch || globalThis.fetch || nodeFetch;
+      return fetch2(requestOptions.url, Object.assign({
         method: requestOptions.method,
         body: requestOptions.body,
         headers: requestOptions.headers,
@@ -6488,9 +6488,9 @@ var require_dist_node9 = __commonJS({
       response.data.total_count = totalCount;
       return response;
     }
-    function iterator(octokit, route, parameters) {
-      const options = typeof route === "function" ? route.endpoint(parameters) : octokit.request.endpoint(route, parameters);
-      const requestMethod = typeof route === "function" ? route : octokit.request;
+    function iterator(octokit2, route, parameters) {
+      const options = typeof route === "function" ? route.endpoint(parameters) : octokit2.request.endpoint(route, parameters);
+      const requestMethod = typeof route === "function" ? route : octokit2.request;
       const method = options.method;
       const headers = options.headers;
       let url = options.url;
@@ -6528,14 +6528,14 @@ var require_dist_node9 = __commonJS({
         })
       };
     }
-    function paginate(octokit, route, parameters, mapFn) {
+    function paginate(octokit2, route, parameters, mapFn) {
       if (typeof parameters === "function") {
         mapFn = parameters;
         parameters = void 0;
       }
-      return gather(octokit, [], iterator(octokit, route, parameters)[Symbol.asyncIterator](), mapFn);
+      return gather(octokit2, [], iterator(octokit2, route, parameters)[Symbol.asyncIterator](), mapFn);
     }
-    function gather(octokit, results, iterator2, mapFn) {
+    function gather(octokit2, results, iterator2, mapFn) {
       return iterator2.next().then((result) => {
         if (result.done) {
           return results;
@@ -6548,7 +6548,7 @@ var require_dist_node9 = __commonJS({
         if (earlyExit) {
           return results;
         }
-        return gather(octokit, results, iterator2, mapFn);
+        return gather(octokit2, results, iterator2, mapFn);
       });
     }
     var composePaginateRest = Object.assign(paginate, {
@@ -6562,10 +6562,10 @@ var require_dist_node9 = __commonJS({
         return false;
       }
     }
-    function paginateRest(octokit) {
+    function paginateRest(octokit2) {
       return {
-        paginate: Object.assign(paginate.bind(null, octokit), {
-          iterator: iterator.bind(null, octokit)
+        paginate: Object.assign(paginate.bind(null, octokit2), {
+          iterator: iterator.bind(null, octokit2)
         })
       };
     }
@@ -7566,7 +7566,7 @@ var require_dist_node10 = __commonJS({
       }
     };
     var VERSION = "6.7.0";
-    function endpointsToMethods(octokit, endpointsMap) {
+    function endpointsToMethods(octokit2, endpointsMap) {
       const newMethods = {};
       for (const [scope, endpoints] of Object.entries(endpointsMap)) {
         for (const [methodName, endpoint] of Object.entries(endpoints)) {
@@ -7581,16 +7581,16 @@ var require_dist_node10 = __commonJS({
           }
           const scopeMethods = newMethods[scope];
           if (decorations) {
-            scopeMethods[methodName] = decorate(octokit, scope, methodName, endpointDefaults, decorations);
+            scopeMethods[methodName] = decorate(octokit2, scope, methodName, endpointDefaults, decorations);
             continue;
           }
-          scopeMethods[methodName] = octokit.request.defaults(endpointDefaults);
+          scopeMethods[methodName] = octokit2.request.defaults(endpointDefaults);
         }
       }
       return newMethods;
     }
-    function decorate(octokit, scope, methodName, defaults, decorations) {
-      const requestWithDefaults = octokit.request.defaults(defaults);
+    function decorate(octokit2, scope, methodName, defaults, decorations) {
+      const requestWithDefaults = octokit2.request.defaults(defaults);
       function withDecorations(...args) {
         let options = requestWithDefaults.endpoint.merge(...args);
         if (decorations.mapToData) {
@@ -7602,16 +7602,16 @@ var require_dist_node10 = __commonJS({
         }
         if (decorations.renamed) {
           const [newScope, newMethodName] = decorations.renamed;
-          octokit.log.warn(`octokit.${scope}.${methodName}() has been renamed to octokit.${newScope}.${newMethodName}()`);
+          octokit2.log.warn(`octokit.${scope}.${methodName}() has been renamed to octokit.${newScope}.${newMethodName}()`);
         }
         if (decorations.deprecated) {
-          octokit.log.warn(decorations.deprecated);
+          octokit2.log.warn(decorations.deprecated);
         }
         if (decorations.renamedParameters) {
           const options2 = requestWithDefaults.endpoint.merge(...args);
           for (const [name, alias] of Object.entries(decorations.renamedParameters)) {
             if (name in options2) {
-              octokit.log.warn(`"${name}" parameter is deprecated for "octokit.${scope}.${methodName}()". Use "${alias}" instead`);
+              octokit2.log.warn(`"${name}" parameter is deprecated for "octokit.${scope}.${methodName}()". Use "${alias}" instead`);
               if (!(alias in options2)) {
                 options2[alias] = options2[name];
               }
@@ -7624,15 +7624,15 @@ var require_dist_node10 = __commonJS({
       }
       return Object.assign(withDecorations, requestWithDefaults);
     }
-    function restEndpointMethods(octokit) {
-      const api = endpointsToMethods(octokit, Endpoints);
+    function restEndpointMethods(octokit2) {
+      const api = endpointsToMethods(octokit2, Endpoints);
       return {
         rest: api
       };
     }
     restEndpointMethods.VERSION = VERSION;
-    function legacyRestEndpointMethods(octokit) {
-      const api = endpointsToMethods(octokit, Endpoints);
+    function legacyRestEndpointMethods(octokit2) {
+      const api = endpointsToMethods(octokit2, Endpoints);
       return __spreadProps(__spreadValues({}, api), {
         rest: api
       });
@@ -8971,14 +8971,14 @@ var require_dist_node11 = __commonJS({
       return ex && typeof ex === "object" && "default" in ex ? ex["default"] : ex;
     }
     var Bottleneck = _interopDefault(require_light());
-    async function errorRequest(octokit, state, error, options) {
+    async function errorRequest(octokit2, state, error, options) {
       if (!error.request || !error.request.request) {
         throw error;
       }
       if (error.status >= 400 && !state.doNotRetry.includes(error.status)) {
         const retries = options.request.retries != null ? options.request.retries : state.retries;
         const retryAfter = Math.pow((options.request.retryCount || 0) + 1, 2);
-        throw octokit.retry.retryRequest(error, retries, retryAfter);
+        throw octokit2.retry.retryRequest(error, retries, retryAfter);
       }
       throw error;
     }
@@ -8995,7 +8995,7 @@ var require_dist_node11 = __commonJS({
       return limiter.schedule(request, options);
     }
     var VERSION = "4.0.3";
-    function retry(octokit, octokitOptions) {
+    function retry(octokit2, octokitOptions) {
       const state = Object.assign({
         enabled: true,
         retryAfterBaseValue: 1e3,
@@ -9003,8 +9003,8 @@ var require_dist_node11 = __commonJS({
         retries: 3
       }, octokitOptions.retry);
       if (state.enabled) {
-        octokit.hook.error("request", errorRequest.bind(null, octokit, state));
-        octokit.hook.wrap("request", wrapRequest.bind(null, state));
+        octokit2.hook.error("request", errorRequest.bind(null, octokit2, state));
+        octokit2.hook.wrap("request", wrapRequest.bind(null, state));
       }
       return {
         retry: {
@@ -9105,7 +9105,7 @@ var require_dist_node12 = __commonJS({
         minTime: 3e3
       }, common));
     };
-    function throttling(octokit, octokitOptions) {
+    function throttling(octokit2, octokitOptions) {
       const {
         enabled = true,
         Bottleneck = BottleneckLight,
@@ -9148,11 +9148,11 @@ var require_dist_node12 = __commonJS({
       const events = {};
       const emitter = new Bottleneck.Events(events);
       events.on("secondary-limit", isUsingDeprecatedOnAbuseLimitHandler ? function(...args) {
-        octokit.log.warn("[@octokit/plugin-throttling] `onAbuseLimit()` is deprecated and will be removed in a future release of `@octokit/plugin-throttling`, please use the `onSecondaryRateLimit` handler instead");
+        octokit2.log.warn("[@octokit/plugin-throttling] `onAbuseLimit()` is deprecated and will be removed in a future release of `@octokit/plugin-throttling`, please use the `onSecondaryRateLimit` handler instead");
         return state.onAbuseLimit(...args);
       } : state.onSecondaryRateLimit);
       events.on("rate-limit", state.onRateLimit);
-      events.on("error", (e) => octokit.log.warn("Error in throttling-plugin limit handler", e));
+      events.on("error", (e) => octokit2.log.warn("Error in throttling-plugin limit handler", e));
       state.retryLimiter.on("failed", async function(error, info) {
         const [state2, request, options] = info.args;
         const {
@@ -9171,7 +9171,7 @@ var require_dist_node12 = __commonJS({
         } = await async function() {
           if (/\bsecondary rate\b/i.test(error.message)) {
             const retryAfter2 = Math.max(~~error.response.headers["retry-after"], state2.minimumSecondaryRateRetryAfter);
-            const wantRetry2 = await emitter.trigger("secondary-limit", retryAfter2, options, octokit, retryCount);
+            const wantRetry2 = await emitter.trigger("secondary-limit", retryAfter2, options, octokit2, retryCount);
             return {
               wantRetry: wantRetry2,
               retryAfter: retryAfter2
@@ -9180,7 +9180,7 @@ var require_dist_node12 = __commonJS({
           if (error.response.headers != null && error.response.headers["x-ratelimit-remaining"] === "0") {
             const rateLimitReset = new Date(~~error.response.headers["x-ratelimit-reset"] * 1e3).getTime();
             const retryAfter2 = Math.max(Math.ceil((rateLimitReset - Date.now()) / 1e3), 0);
-            const wantRetry2 = await emitter.trigger("rate-limit", retryAfter2, options, octokit, retryCount);
+            const wantRetry2 = await emitter.trigger("rate-limit", retryAfter2, options, octokit2, retryCount);
             return {
               wantRetry: wantRetry2,
               retryAfter: retryAfter2
@@ -9193,7 +9193,7 @@ var require_dist_node12 = __commonJS({
           return retryAfter * state2.retryAfterBaseValue;
         }
       });
-      octokit.hook.wrap("request", wrapRequest.bind(null, state));
+      octokit2.hook.wrap("request", wrapRequest.bind(null, state));
       return {};
     }
     throttling.VERSION = VERSION;
@@ -20269,11 +20269,11 @@ var require_dist_node21 = __commonJS({
         type: "oauth-user"
       }, options), {
         async factory(options2) {
-          const octokit = new state.Octokit({
+          const octokit2 = new state.Octokit({
             authStrategy: authOauthUser.createOAuthUserAuth,
             auth: options2
           });
-          const authentication = await octokit.auth({
+          const authentication = await octokit2.auth({
             type: "get"
           });
           await emitEvent(state, {
@@ -20282,9 +20282,9 @@ var require_dist_node21 = __commonJS({
             token: authentication.token,
             scopes: authentication.scopes,
             authentication,
-            octokit
+            octokit: octokit2
           });
-          return octokit;
+          return octokit2;
         }
       }));
     }
@@ -20942,7 +20942,7 @@ var require_dist_node21 = __commonJS({
       constructor(options) {
         const Octokit2 = options.Octokit || OAuthAppOctokit;
         this.type = options.clientType || "oauth-app";
-        const octokit = new Octokit2({
+        const octokit2 = new Octokit2({
           authStrategy: OAuthAppAuth.createOAuthAppAuth,
           auth: {
             clientType: this.type,
@@ -20960,11 +20960,11 @@ var require_dist_node21 = __commonJS({
           redirectUrl: options.redirectUrl,
           log: options.log,
           Octokit: Octokit2,
-          octokit,
+          octokit: octokit2,
           eventHandlers: {}
         };
         this.on = addEventHandler.bind(null, state);
-        this.octokit = octokit;
+        this.octokit = octokit2;
         this.getUserOctokit = getUserOctokitWithState.bind(null, state);
         this.getWebFlowAuthorizationUrl = getWebFlowAuthorizationUrlWithState.bind(null, state);
         this.createToken = createTokenWithState.bind(null, state);
@@ -21493,18 +21493,18 @@ var require_dist_node24 = __commonJS({
         secret: options.secret,
         transform: async (event) => {
           if (!("installation" in event.payload) || typeof event.payload.installation !== "object") {
-            const octokit2 = new appOctokit.constructor({
+            const octokit3 = new appOctokit.constructor({
               authStrategy: authUnauthenticated.createUnauthenticatedAuth,
               auth: {
                 reason: `"installation" key missing in webhook event payload`
               }
             });
             return __spreadProps(__spreadValues({}, event), {
-              octokit: octokit2
+              octokit: octokit3
             });
           }
           const installationId = event.payload.installation.id;
-          const octokit = await appOctokit.auth({
+          const octokit2 = await appOctokit.auth({
             type: "installation",
             installationId,
             factory(auth) {
@@ -21517,11 +21517,11 @@ var require_dist_node24 = __commonJS({
               }));
             }
           });
-          octokit.hook.before("request", (options2) => {
+          octokit2.hook.before("request", (options2) => {
             options2.headers["x-github-delivery"] = event.id;
           });
           return __spreadProps(__spreadValues({}, event), {
-            octokit
+            octokit: octokit2
           });
         }
       });
@@ -21604,15 +21604,15 @@ var require_dist_node24 = __commonJS({
         async *[Symbol.asyncIterator]() {
           const iterator = query ? singleInstallationIterator(app, query.installationId) : app.eachInstallation.iterator();
           for await (const {
-            octokit
+            octokit: octokit2
           } of iterator) {
-            const repositoriesIterator = pluginPaginateRest.composePaginateRest.iterator(octokit, "GET /installation/repositories");
+            const repositoriesIterator = pluginPaginateRest.composePaginateRest.iterator(octokit2, "GET /installation/repositories");
             for await (const {
               data: repositories
             } of repositoriesIterator) {
               for (const repository of repositories) {
                 yield {
-                  octokit,
+                  octokit: octokit2,
                   repository
                 };
               }
@@ -21760,17 +21760,17 @@ var require_dist_node25 = __commonJS({
         onSecondaryRateLimit
       }
     });
-    function onRateLimit(retryAfter, options, octokit) {
-      octokit.log.warn(`Request quota exhausted for request ${options.method} ${options.url}`);
+    function onRateLimit(retryAfter, options, octokit2) {
+      octokit2.log.warn(`Request quota exhausted for request ${options.method} ${options.url}`);
       if (options.request.retryCount === 0) {
-        octokit.log.info(`Retrying after ${retryAfter} seconds!`);
+        octokit2.log.info(`Retrying after ${retryAfter} seconds!`);
         return true;
       }
     }
-    function onSecondaryRateLimit(retryAfter, options, octokit) {
-      octokit.log.warn(`SecondaryRateLimit detected for request ${options.method} ${options.url}`);
+    function onSecondaryRateLimit(retryAfter, options, octokit2) {
+      octokit2.log.warn(`SecondaryRateLimit detected for request ${options.method} ${options.url}`);
       if (options.request.retryCount === 0) {
-        octokit.log.info(`Retrying after ${retryAfter} seconds!`);
+        octokit2.log.info(`Retrying after ${retryAfter} seconds!`);
         return true;
       }
     }
@@ -21796,6 +21796,7 @@ var require_dist_node25 = __commonJS({
 var fs = require("fs");
 var axios = require_axios2();
 var { Octokit, App } = require_dist_node25();
+var octokit = new Octokit({ auth: process.env.GITHUB_ACCESS_TOKEN });
 var fetchHeadline = async (term) => {
   return await axios.post("https://api.openai.com/v1/completions", {
     "model": "text-ada-001",
@@ -21829,6 +21830,25 @@ var fetchArticleContent = async (term, headline) => {
     return;
   });
 };
+var downloadImage = async (url, filename) => {
+  const response = await fetch(url);
+  const blob = await response.blob();
+  const arrayBuffer = await blob.arrayBuffer();
+  const buffer = Buffer.from(arrayBuffer).toString("base64");
+  octokit.request(`PUT /repos/OHovey/Neutrality-Media/contents/src/images/${filename}.png`, {
+    owner: "OHovey",
+    repo: "Neutrality-Media",
+    path: `/src/images/${filename}.png`,
+    message: `uploaded new article image: ${filename}.png [skip ci]`,
+    committer: {
+      name: "Oliver Hovey",
+      email: "olliehovey@gmail.com"
+    },
+    content: buffer
+  }).then((res) => {
+    console.log(response);
+  });
+};
 exports.handler = async (event) => {
   console.log("Received event:");
   const result = await axios.get(`https://api.apify.com/v2/actor-tasks/VncdzeYjbYNubPpkY/runs/last/dataset/items?token=${process.env.APIFY_TOKEN}&status=SUCCEEDED`, {
@@ -21838,7 +21858,6 @@ exports.handler = async (event) => {
   }).catch((err) => {
     console.log("error: " + err);
   });
-  const octokit = new Octokit({ auth: process.env.GITHUB_ACCESS_TOKEN });
   const { data: { login } } = await octokit.rest.users.getAuthenticated();
   let articles = {};
   const querys = [...new Set(result.data.filter((query) => query.hasOwnProperty("parentQuery")).map((query) => query.parentQuery))];
@@ -21858,6 +21877,7 @@ exports.handler = async (event) => {
     console.error(err);
   });
   const imageUrl = imageData.data.data[0].url;
+  await downloadImage(imageUrl, headline.split(" ").join("-"));
   console.log("imageUrl: " + imageUrl);
   let d = new Date();
   let ye = new Intl.DateTimeFormat("en", { year: "numeric" }).format(d);
@@ -21886,7 +21906,6 @@ imageUrl: ${imageUrl}
     },
     content: Buffer.from(articles[headline]).toString("base64")
   }).then((res) => {
-    console.log(res);
   }).catch((err) => {
     console.error(err);
   });

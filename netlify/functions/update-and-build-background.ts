@@ -1,8 +1,12 @@
+import { fdatasync } from "fs";
+
 const fs = require('fs');
 const axios = require('axios');
 
 const { Octokit, App } = require("octokit");
 
+
+const octokit = new Octokit({ auth: process.env.GITHUB_ACCESS_TOKEN });
 
 const fetchHeadline = async (term: string): Promise<string> => {
 
@@ -45,6 +49,38 @@ const fetchArticleContent = async (term: string, headline: string): Promise<stri
     });
 }
 
+const downloadImage = async (url: string, filename: string) => {
+
+    const response = await fetch(url);
+    // console.log(response);
+    const blob = await response.blob();
+    const arrayBuffer = await blob.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer).toString('base64');
+    // console.log(buffer);
+
+    // octokit.git.createBlob({
+    //     owner: "OHovey",
+    //     repo: "Neutrality-Media",
+    //     content: buffer,
+    //     encoding: 'base64'
+    // })
+    // await fs.writeFile(`${__dirname}/src/images/${filename}.png`, buffer, (err) => console.error(err))
+
+    octokit.request(`PUT /repos/OHovey/Neutrality-Media/contents/src/images/${filename}.png`, {
+        owner: 'OHovey',
+        repo: 'Neutrality-Media',
+        path: `/src/images/${filename}.png`,
+        message: `uploaded new article image: ${filename}.png [skip ci]`,
+        committer: {
+          name: 'Oliver Hovey',
+          email: 'olliehovey@gmail.com'
+        },
+        content: buffer
+      }).then( res => {
+        console.log(response)
+      })
+}
+
 exports.handler = async (event) => {
 
     console.log("Received event:");
@@ -57,7 +93,7 @@ exports.handler = async (event) => {
         console.log("error: " + err)
     })
 
-    const octokit = new Octokit({ auth: process.env.GITHUB_ACCESS_TOKEN });
+    
     const { data: { login } } = await octokit.rest.users.getAuthenticated();
 
     let articles = {};
@@ -165,6 +201,9 @@ exports.handler = async (event) => {
 
     const imageUrl = imageData.data.data[0].url;
 
+    // download The image
+    await downloadImage(imageUrl, headline.split(' ').join('-'));
+
     console.log("imageUrl: " + imageUrl)
 
     // declare some details for the markdown
@@ -195,7 +234,7 @@ exports.handler = async (event) => {
         content: Buffer.from(articles[headline]).toString('base64')
     }).then( res => {
 
-        console.log(res);
+        // console.log(res);
     }).catch( err => {
 
         console.error(err);
