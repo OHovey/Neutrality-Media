@@ -226,7 +226,7 @@ exports.handler = async (event) => {
     const title = headline.split(' ').join('-');
 
 
-    await octokit.request(`PUT /repos/OHovey/Neutrality-Media/contents/src/data/articles/${title}.md`, {
+    await octokit.request(`PUT /repos/OHovey/Neutrality-Media/contents/src/data/articles/${title}.md`, { 
         owner: 'OHovey',
         repo: 'Neutrality-Media',
         path: `/src/data/articles/${title}.md`,
