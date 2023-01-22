@@ -2,6 +2,7 @@ import * as React from 'react';
 import type { PageProps } from 'gatsby';
 import Template from '../../templates/base';
 import { graphql, Link as GatsbyLink } from 'gatsby';
+import { StaticImage } from 'gatsby-plugin-image';
 
 import Moment from 'react-moment';
 
@@ -9,7 +10,8 @@ type Article = {
     frontmatter: {
         title: string,
         author: string,
-        date: string
+        date: string,
+        imageUrl: string
     },
     excerpt: string
 }
@@ -42,7 +44,12 @@ const Articles = ({ data }: PageProps<ArticlesProps> ) => {
                                         <div className="max-w-xs mx-auto">
                                             <div className="relative mb-12 h-64">
                                                 <div className="absolute left-0 bottom-0 -ml-6 -mb-6 w-full bg-indigo-100 h-64" />
-                                                    <img className="relative w-full h-full" src="https://shuffle.dev/pstls-assets/images/blog/article-big.png" alt="" />
+                                                <StaticImage 
+                                                    className="relative w-full h-full" src="../../images/Liverpool-vs-Chelsea---Liverpool's-Season-Fulfilling-Match.png" 
+                                                    alt={"So So..."} 
+                                                    width={250}
+                                                    height={250}
+                                                />
                                                 </div>
                                                 <h2 className="text-4xl mb-4 font-heading">{article.frontmatter.title}</h2>
                                                 <div className="mb-4 text-indigo-200">

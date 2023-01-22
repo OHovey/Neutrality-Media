@@ -3,7 +3,7 @@ import { graphql } from 'gatsby';
 import type { HeadFC, PageProps, HeadProps } from "gatsby"
 import Template from "../templates/base"
 import { Link as GatsbyLink } from 'gatsby';
-// import Article from "../templates/Article";
+import { StaticImage } from "gatsby-plugin-image";
 
 
 type Article = {
@@ -36,8 +36,8 @@ const IndexPage: React.FC<PageProps<HomeProps>> = ({ data }) => {
 
   React.useEffect(() => {
 
-    
-  });
+    console.log(articles.map( article => article.frontmatter.imageUrl))
+  })
 
   return (
     <Template>
@@ -57,21 +57,24 @@ const IndexPage: React.FC<PageProps<HomeProps>> = ({ data }) => {
                 <div className="flex flex-wrap -mx-4">
                 <div className="w-full md:w-1/2 px-4 mb-16 lg:mb-0">
                     <GatsbyLink to={`/articles/${articles[0].frontmatter.title.split(' ').join('-')}`} className="block max-w-lg mx-auto">
-                    <div className="relative mb-12" style={{height: 264}}>
-                        <div className="absolute left-0 bottom-0 -ml-6 -mb-6 w-full bg-indigo-100" style={{height: 264}} />
-                        <img className="relative w-full h-full" src={`${articles[0].frontmatter.imageUrl}`} alt="" />
-                    </div>
-                    <div className="mb-4 text-indigo-200">
-                        <span className="text-indigo-500">6 min read</span>
-                        <span className="mx-2">•</span>
-                        <span className="text-indigo-500">{articles[0].frontmatter.date}</span>
-                    </div>
-                    <h2 className="text-4xl mb-4 font-heading">{articles[0].frontmatter.title}</h2>
-                    <p className="leading-8 mb-6">{articles[0].excerpt}</p>
-                    <div className="flex items-center">
-                        {/* <img className="mr-3" src={`${articles[0].frontmatter.imageUrl}`} alt="" /> */}
-                        <p>{articles[0].frontmatter.author}</p>
-                    </div>
+                      <div className="relative mb-12" style={{height: 264}}>
+                          <div className="absolute left-0 bottom-0 -ml-6 -mb-6 w-full bg-indigo-100" style={{height: 264}} />
+                          {/* <img className="relative w-full h-full" src={`${articles[0].frontmatter.imageUrl}`} alt="" /> */}
+                          <StaticImage className="relative w-full h-full" src={articles[0].frontmatter.imageUrl.split(':')[0]} alt={articles[0].frontmatter.imageUrl.split('/')[0]} />
+                          {/* <StaticImage src={articles[0].frontmatter.imageUrl} alt={articles[0].frontmatter.imageUrl.split('/')[0]} /> */}
+                          {/* <StaticImage src="src/images/LiverpoolvsChelsea-Liverpool'sSeason-FulfillingMatch" alt={articles[0].frontmatter.imageUrl.split('/')[0]} /> */}
+                      </div>
+                      <div className="mb-4 text-indigo-200">
+                          <span className="text-indigo-500">6 min read</span>
+                          <span className="mx-2">•</span>
+                          <span className="text-indigo-500">{articles[0].frontmatter.date}</span>
+                      </div>
+                      <h2 className="text-4xl mb-4 font-heading">{articles[0].frontmatter.title}</h2>
+                      <p className="leading-8 mb-6">{articles[0].excerpt}</p>
+                      <div className="flex items-center">
+                          {/* <img className="mr-3" src={`${articles[0].frontmatter.imageUrl}`} alt="" /> */}
+                          <p>{articles[0].frontmatter.author}</p>
+                      </div>
                     </GatsbyLink>
                 </div>
                 <div className="w-full md:w-1/2 px-4">
@@ -84,7 +87,13 @@ const IndexPage: React.FC<PageProps<HomeProps>> = ({ data }) => {
                     >
                       <div className="flex items-center -mx-4 -mb-3">
                           <div className="px-4 mb-3">
-                          <img src={article.frontmatter.imageUrl} style={{ width: '8rem', height: "8rem" }} />
+                          {/* <img src={article.frontmatter.imageUrl} style={{ width: '8rem', height: "8rem" }} /> */}
+                          <StaticImage 
+                            className="relative w-full h-full" src={`../images/Liverpool-vs-Chelsea---Liverpool's-Season-Fulfilling-Match.png`} 
+                            alt={article.frontmatter.imageUrl.split('/')[0]} 
+                            width={250}
+                            height={250}
+                          />
                           </div>
                           <div className="px-4 mb-3">
                           <div className="mb-2 text-indigo-200">
