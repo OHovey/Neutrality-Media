@@ -3,6 +3,7 @@ import { graphql } from 'gatsby';
 import type { HeadFC, PageProps, HeadProps } from "gatsby"
 import Template from "../templates/base"
 import { Link as GatsbyLink } from 'gatsby';
+// import Article from "../templates/Article";
 
 
 type Article = {
@@ -21,11 +22,21 @@ interface HomeProps {
 }
 const IndexPage: React.FC<PageProps<HomeProps>> = ({ data }) => {
 
-  const [articles, setArticles] = React.useState(data.allMarkdownRemark.nodes);
+  const [articles, setArticles] = React.useState(data.allMarkdownRemark.nodes.sort( (a, b) => {
+
+    const aDate = new Date(a.frontmatter.date);
+    const bDate = new Date(b.frontmatter.date);
+
+    if (aDate > bDate) return -1;
+    
+    if (aDate < bDate) return 1;
+
+    return 0
+  }));
 
   React.useEffect(() => {
 
-    console.log(articles);
+    
   });
 
   return (

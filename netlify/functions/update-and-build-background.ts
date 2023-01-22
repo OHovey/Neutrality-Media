@@ -211,9 +211,9 @@ exports.handler = async (event) => {
     let ye = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(d);
     let mo = new Intl.DateTimeFormat('en', { month: '2-digit' }).format(d);
     let da = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(d);
-    const timestamp = `${da}-${mo}-${ye}`;
+    const timestamp = `${ye}-${mo}-${da}`;
     const author = "roboman";
-    const metaData = `---\ntitle: ${headline}\nauthor: ${author}\ndate: ${timestamp}\nimageUrl: ${imageUrl}\n---\n`;
+    const metaData = `---\ntitle: ${headline}\nauthor: ${author}\ndate: ${timestamp}\nimageUrl: src/images/${headline.split(' ').join('')}\n---\n`;
 
     article = `${metaData}${article}`
 
