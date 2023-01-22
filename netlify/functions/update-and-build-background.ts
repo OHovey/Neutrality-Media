@@ -5,6 +5,8 @@ const axios = require('axios');
 
 const { Octokit, App } = require("octokit");
 
+const fetch = require('node-fetch');
+
 
 const octokit = new Octokit({ auth: process.env.GITHUB_ACCESS_TOKEN });
 
@@ -27,6 +29,8 @@ const fetchHeadline = async (term: string): Promise<string> => {
         return;
     });
 }
+
+
 
 const fetchArticleContent = async (term: string, headline: string): Promise<string> => {
 
@@ -213,7 +217,7 @@ exports.handler = async (event) => {
     let da = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(d);
     const timestamp = `${ye}-${mo}-${da}`;
     const author = "roboman";
-    const metaData = `---\ntitle: ${headline}\nauthor: ${author}\ndate: ${timestamp}\nimageUrl: src/images/${headline.split(' ').join('')}\n---\n`;
+    const metaData = `---\ntitle: ${headline}\nauthor: ${author}\ndate: ${timestamp}\nimageUrl: ../images/${headline.split(' ').join('')}\n articlesImageUrl: ../../images/${headline.split(' ').join('')}\n---\n`;
 
     article = `${metaData}${article}`
 

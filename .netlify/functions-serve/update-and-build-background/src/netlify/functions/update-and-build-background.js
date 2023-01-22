@@ -21889,7 +21889,8 @@ exports.handler = async (event) => {
 title: ${headline}
 author: ${author}
 date: ${timestamp}
-imageUrl: src/images/${headline.split(" ").join("")}
+imageUrl: ../images/${headline.split(" ").join("")}
+ articlesImageUrl: ../../images/${headline.split(" ").join("")}
 ---
 `;
   article = `${metaData}${article}`;
