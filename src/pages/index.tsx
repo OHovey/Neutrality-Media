@@ -11,7 +11,8 @@ type Article = {
     title: string,
     date: string,
     author: string,
-    imageUrl: string
+    imageUrl: string,
+    articlesImageUrl: string
   },
   excerpt: string
 }
@@ -60,7 +61,7 @@ const IndexPage: React.FC<PageProps<HomeProps>> = ({ data }) => {
                       <div className="relative mb-12" style={{height: 264}}>
                           <div className="absolute left-0 bottom-0 -ml-6 -mb-6 w-full bg-indigo-100" style={{height: 264}} />
                           {/* <img className="relative w-full h-full" src={`${articles[0].frontmatter.imageUrl}`} alt="" /> */}
-                          <StaticImage className="relative w-full h-full" src={articles[0].frontmatter.imageUrl.split(':')[0]} alt={articles[0].frontmatter.imageUrl.split('/')[0]} />
+                          <StaticImage className="relative w-full h-full" src={articles[0].frontmatter.imageUrl} alt={articles[0].frontmatter.imageUrl.split('/')[0]} />
                           {/* <StaticImage src={articles[0].frontmatter.imageUrl} alt={articles[0].frontmatter.imageUrl.split('/')[0]} /> */}
                           {/* <StaticImage src="src/images/LiverpoolvsChelsea-Liverpool'sSeason-FulfillingMatch" alt={articles[0].frontmatter.imageUrl.split('/')[0]} /> */}
                       </div>
@@ -141,6 +142,7 @@ export const query = graphql`
           date
           author
           imageUrl
+          articlesImageUrl
         }
         excerpt(pruneLength: 80)
       }
