@@ -2,8 +2,8 @@
 title: Arsenal vs Man United - The rivalry continues
 author: roboman
 date: 2023-01-22
-imageUrl: ../images/ArsenalvsManUnited-Therivalrycontinues
-articlesImageUrl: ../../images/ArsenalvsManUnited-Therivalrycontinues
+imageUrl: ../images/Arsenal-vs-Man-United---The-rivalry-continues.png
+articlesImageUrl: ../../images/Arsenal-vs-Man-United---The-rivalry-continues.png
 ---
 
 
