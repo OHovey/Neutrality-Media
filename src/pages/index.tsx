@@ -3,7 +3,8 @@ import { graphql } from 'gatsby';
 import type { HeadFC, PageProps, HeadProps } from "gatsby"
 import Template from "../templates/base"
 import { Link as GatsbyLink } from 'gatsby';
-import { StaticImage } from "gatsby-plugin-image";
+import { StaticImage, GatsbyImage, getImage } from "gatsby-plugin-image";
+import type { NodePluginArgs } from "gatsby";
 
 
 type Article = {
@@ -12,10 +13,24 @@ type Article = {
     date: string,
     author: string,
     imageUrl: string,
-    articlesImageUrl: string
   },
   excerpt: string
 }
+// interface ImageProps {
+//   name: string,
+//   childImageSharp: {
+//     layout: string,
+//     backgroundColor: string,
+//     images: {
+//       fallback: {
+//         src: string
+//         srcSet: string,
+//         sizes: string,
+//       },
+//     }
+//     sources: Array<any>
+//   }
+// }
 interface HomeProps {
   allMarkdownRemark: {
     nodes: Array<Article>
@@ -35,9 +50,11 @@ const IndexPage: React.FC<PageProps<HomeProps>> = ({ data }) => {
     return 0
   }));
 
+  
+
   React.useEffect(() => {
 
-    console.log(articles.map( article => article.frontmatter.imageUrl))
+    // console.log(articles.map( article => article.frontmatter.imageUrl))
   })
 
   return (
@@ -61,7 +78,7 @@ const IndexPage: React.FC<PageProps<HomeProps>> = ({ data }) => {
                       <div className="relative mb-12" style={{height: 264}}>
                           <div className="absolute left-0 bottom-0 -ml-6 -mb-6 w-full bg-indigo-100" style={{height: 264}} />
                           {/* <img className="relative w-full h-full" src={`${articles[0].frontmatter.imageUrl}`} alt="" /> */}
-                          <StaticImage className="relative w-full h-full" src={articles[0].frontmatter.imageUrl} alt={articles[0].frontmatter.imageUrl.split('/')[0]} />
+                          {/* <StaticImage className="relative w-full h-full" src={articles[0].frontmatter.imageUrl} alt={articles[0].frontmatter.imageUrl.split('/')[0]} /> */}
                           {/* <StaticImage src={articles[0].frontmatter.imageUrl} alt={articles[0].frontmatter.imageUrl.split('/')[0]} /> */}
                           {/* <StaticImage src="src/images/LiverpoolvsChelsea-Liverpool'sSeason-FulfillingMatch" alt={articles[0].frontmatter.imageUrl.split('/')[0]} /> */}
                       </div>
@@ -88,13 +105,32 @@ const IndexPage: React.FC<PageProps<HomeProps>> = ({ data }) => {
                     >
                       <div className="flex items-center -mx-4 -mb-3">
                           <div className="px-4 mb-3">
-                          {/* <img src={article.frontmatter.imageUrl} style={{ width: '8rem', height: "8rem" }} /> */}
-                          <StaticImage 
-                            className="relative w-full h-full" src={`../images/Liverpool-vs-Chelsea---Liverpool's-Season-Fulfilling-Match.png`} 
+                          <img src={article.frontmatter.imageUrl} style={{ width: '8rem', height: "8rem" }} />
+                          {/* <p>{article.frontmatter.imageUrl}</p> */}
+                          {/* <StaticImage 
+                            className="relative w-full h-full" 
+                            src={article.frontmatter.imageUrl} 
                             alt={article.frontmatter.imageUrl.split('/')[0]} 
                             width={250}
                             height={250}
-                          />
+                          /> */}
+                          {/* {
+                            (() => {
+
+                              console.log(article.frontmatter.imageUrl.split('/')[article.frontmatter.imageUrl.split('/').length - 1].replace('.png', ''))
+                              console.log(data.allFile.nodes.map( image => image.name ))
+                              const imageData = data.allFile.nodes.filter( image => image.name == article.frontmatter.imageUrl.split('/')[article.frontmatter.imageUrl.split('/').length - 1].replace('.png', ''))
+                                                                  // .map( image => image.childImageSharp);
+                              
+                              console.log(imageData)
+                              return (
+                                <GatsbyImage 
+                                  // @ts-ignore
+                                  image={imageData} 
+                                />
+                              )
+                            })()
+                          } */}
                           </div>
                           <div className="px-4 mb-3">
                           <div className="mb-2 text-indigo-200">
@@ -142,7 +178,6 @@ export const query = graphql`
           date
           author
           imageUrl
-          articlesImageUrl
         }
         excerpt(pruneLength: 80)
       }

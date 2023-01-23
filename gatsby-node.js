@@ -1,3 +1,6 @@
+const fs = require("fs");
+const { createRemoteFileNode } = require("gatsby-source-filesystem");
+const { dirname } = require("path");
 const path = require("path");
 
 
@@ -55,3 +58,51 @@ exports.createPages = async ({ graphql, actions }) => {
         });
     })
 }
+
+exports.onCreateNode = ({ node, actions, getNode }) => {
+    const { createNodeField } = actions
+
+    console.log(node.internal.type)
+    if (node.internal.type === `page`) {
+
+        console.log('is a page')
+
+    //   const parsedFilePath = createFilePath({ node, getNode })
+    //   if (parsedFilePath.endsWith('.jpg') || parsedFilePath.endsWith('.png')) {
+    //     createNodeField({
+    //       node,
+    //       name: `slug`,
+    //       value: parsedFilePath,
+    //     })
+    //   }
+    }
+  }
+
+// exports.sourceNodes = async ({ createNodeId, createContentDigest, getChache, createNode }) => {
+
+
+//     const imageList = await fs.readdir(path.resolve(__dirname, './src/images'), (err, files) => {
+
+//         console.log(files);
+
+//         if (err) {
+//             return console.log('Unable to scan directory');
+//         }
+
+//         files.forEach( file => {
+
+//             createRemoteFileNode({
+//                 url: path.resolve(__dirname, './src/images/', file),
+//                 parentNode: {},
+//                 getChache,
+//                 createNode,
+//                 createNodeId,
+//                 ext: ".png",
+//                 name: file.split('/')[file.split('/').length - 1]
+//             })
+
+            
+//         })
+//     }) 
+
+// }
