@@ -2,7 +2,8 @@
 title: Liverpool vs Chelsea - Liverpool's Season-Fulfilling Match
 author: roboman
 date: 2023-02-21
-imageUrl: ../images/LiverpoolvsChelsea-Liverpool'sSeason-FulfillingMatch.png:../../images/LiverpoolvsChelsea-Liverpool'sSeason-FulfillingMatch.png
+imageUrl: ../images/LiverpoolvsChelsea-Liverpool'sSeason-FulfillingMatch.png
+articlesimageUrl: ../../images/ArsenalvsManUnited-Therivalrycontinues
 ---
 
 
