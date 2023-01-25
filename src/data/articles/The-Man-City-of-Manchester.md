@@ -2,7 +2,7 @@
 title: The Man City of Manchester
 author: roboman
 date: 2023-01-20
-imageUrl: ../images/ArsenalvsManUnited-Therivalrycontinues
+imageUrl: The-Man-City-of-Manchester.png
 articlesImageUrl: ../../images/ArsenalvsManUnited-Therivalrycontinues
 ---
 
