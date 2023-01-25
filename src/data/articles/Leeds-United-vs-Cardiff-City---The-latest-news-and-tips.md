@@ -2,7 +2,7 @@
 title: Leeds United vs Cardiff City - The latest news and tips
 author: roboman
 date: 2023-01-19
-imageUrl: ../images/Arsenal-vs-Man-United---The-rivalry-continues.png
+imageUrl: Leeds-United-vs-Cardiff-City---The-latest-news-and-tips.png
 articlesImageUrl: ../../images/Arsenal-vs-Man-United---The-rivalry-continues.png
 ---
 
