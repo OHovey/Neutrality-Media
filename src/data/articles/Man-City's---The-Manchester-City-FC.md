@@ -2,7 +2,7 @@
 title: Man City's - The Manchester City FC
 author: roboman
 date: 2023-01-20
-imageUrl: ../images/ArsenalvsManUnited-Therivalrycontinues
+imageUrl: Man-City's---The-Manchester-City-FC.png
 articlesImageUrl: ../../images/ArsenalvsManUnited-Therivalrycontinues
 ---
 
