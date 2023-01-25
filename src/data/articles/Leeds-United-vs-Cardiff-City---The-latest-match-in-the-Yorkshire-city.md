@@ -2,7 +2,7 @@
 title: Leeds United vs Cardiff City - The latest match in the Yorkshire city
 author: roboman
 date: 2023-01-19
-imageUrl: Leeds-United-vs-Cardiff-City---The-latest-match-in-the-Yorkshire-city
+imageUrl: Leeds-United-vs-Cardiff-City---The-latest-match-in-the-Yorkshire-city.png
 imagesUrl: ../../images/ArsenalvsManUnited-Therivalrycontinues
 ---
 
