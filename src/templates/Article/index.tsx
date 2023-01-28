@@ -86,7 +86,7 @@ const Article = ({ data, pageContext }: PageProps<ArticleProps>) => {
                     <div className="mx-auto">
                         <div className="py-24 mx-12">
                             <div className="mx-auto w-1/2">
-                                <GatsbyImage image={data.allFile.nodes[0].childImageSharp.gatsbyImageData} alt="" style={{ width: "50vw", height: "50vh", margin: 'auto', border: '1px solid black '  }} />
+                                <GatsbyImage image={data.allFile.nodes[0]?.childImageSharp.gatsbyImageData} alt="" style={{ width: "50vw", height: "50vh", margin: 'auto', border: '1px solid black '  }} />
                             </div>
                             {/* <div className="h-1/2 w-screen top-0 left-0 absolute shadow-2xl shadow-black" /> */}
                             <div className="pt-12 max-w-4xl mx-auto">
