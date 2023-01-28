@@ -60,12 +60,6 @@ const IndexPage: React.FC<PageProps<HomeProps>> = ({ data }) => {
     return 0
   }));
 
-  
-
-  React.useEffect(() => {
-
-    
-  })
 
   return (
     <Template>
@@ -226,6 +220,7 @@ export const Head = ({ location, params, data, pageContext }: HeadParams) => {
   return (
     <>
       <title>{pageContext.pageTitle}</title>
+      <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="5ccba0a0-8ce1-4ebe-92d1-5f0505f3041f" data-blockingmode="auto" type="text/javascript"></script>
     </>
   )
 }

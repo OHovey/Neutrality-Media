@@ -1,5 +1,5 @@
 import * as React from 'react';
-import type { PageProps } from 'gatsby';
+import type { PageProps, HeadProps } from 'gatsby';
 import { graphql } from 'gatsby';
 
 import Moment from 'react-moment';
@@ -103,6 +103,19 @@ const Article = ({ data, pageContext }: PageProps<ArticleProps>) => {
                 </div>
             </section>
         </Template>
+    )
+}
+
+interface HeadParams {
+    pageContext: {
+        pageTitle: string
+    }
+}
+export const Head = ({ pageContext }: HeadParams) => {
+    return (
+        <>
+            <title>{pageContext.pageTitle}</title>
+        </>
     )
 }
 

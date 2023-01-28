@@ -21,7 +21,11 @@ const Footer = () => {
                             About this site
                         </GatsbyLink>
                     </li>
-                    <li><a className="inline-block font-bold text-sm text-white hover:text-gray-200" href="#">Privacy Policy</a></li>
+                    <li>
+                        <GatsbyLink to={`/privacy-policy`} className="inline-block font-bold text-sm text-white hover:text-gray-200">
+                            Privacy Policy
+                        </GatsbyLink>
+                    </li>
                     </ul>
                 </div>
                 <div className="w-full md:w-1/5 px-4">
@@ -38,7 +42,7 @@ const Footer = () => {
                     </div>
                 </div>
                 </div>
-                <p className="text-sm text-gray-500 text-center">© Pstls. 2022 All right reserved.</p>
+                {/* <p className="text-sm text-gray-500 text-center">© Pstls. 2022 All right reserved.</p> */}
             </div>
         </section>
 

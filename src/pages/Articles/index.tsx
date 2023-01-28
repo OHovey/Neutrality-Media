@@ -73,6 +73,15 @@ const Articles = ({ data }: PageProps<ArticlesProps> ) => {
     )
 }
 
+export const Head = () => {
+
+    return (
+        <>
+            <title>Articles</title>
+        </>
+    )
+}
+
 export const query = graphql`
     query ArticlesQuery {
         allMarkdownRemark(limit: 7) {
