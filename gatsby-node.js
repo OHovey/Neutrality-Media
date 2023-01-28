@@ -53,7 +53,8 @@ exports.createPages = async ({ graphql, actions }) => {
             component: articleTemplate,
             context: {
                 articleId: page.id,
-                pageTitle: page.frontmatter.title
+                pageTitle: page.frontmatter.title,
+                imageTitle: page.frontmatter.title.split(' ').join('-')
             }
         });
     })

@@ -4,7 +4,7 @@ import Template from '../../templates/base';
 import { graphql, Link as GatsbyLink } from 'gatsby';
 
 import Moment from 'react-moment';
-import { StaticImage } from 'gatsby-plugin-image';
+import { StaticImage, GatsbyImage } from 'gatsby-plugin-image';
 
 type Article = {
     frontmatter: {
@@ -15,10 +15,19 @@ type Article = {
     },
     excerpt: string
 }
+interface ArticleProps {
+    name: string,
+    childImageSharp: {
+      gatsbyImageData: any
+    }
+  }
 interface ArticlesProps {
     allMarkdownRemark: {
         nodes: Array<Article>,
         totalCount: number
+    },
+    allFile: {
+      nodes: Array<ArticleProps>
     }
 }
 const Articles = ({ data, pageContext }: PageProps<ArticlesProps> ) => {
@@ -51,13 +60,43 @@ const Articles = ({ data, pageContext }: PageProps<ArticlesProps> ) => {
                                         <div className="max-w-xs mx-auto">
                                             <div className="relative mb-12 h-64">
                                                 <div className="absolute left-0 bottom-0 -ml-6 -mb-6 w-full bg-indigo-100 h-64" />
-                                                    {/* <img className="relative w-full h-full" src="images/Liverpool-vs-Chelsea---Liverpool's-Season-Fulfilling-Match.png" alt="" /> */}
-                                                    {/* <StaticImage 
-                                                        className="relative w-full h-full" src="../../images/Liverpool-vs-Chelsea---Liverpool's-Season-Fulfilling-Match.png" 
-                                                        alt={"So So..."} 
-                                                        width={250}
-                                                        height={250}
-                                                    /> */}
+                                                {
+                                (() => {
+
+                                  const imageData = data.allFile.nodes.map( image => {
+
+                                    console.log(article.frontmatter.imageUrl.replace('.png', ''));
+                                    console.log(image.name)
+
+                                    console.log('\n')
+
+                                    if (image.name == article.frontmatter.imageUrl.replace('.png', '')) {
+
+                                      // console.log(article.frontmatter.imageUrl);
+                                      // console.log(image.name)
+
+                                      return image;
+
+                                    } else {
+                                      
+                                      return {};
+                                    }
+                                  }).filter( image => image.hasOwnProperty("childImageSharp") )
+                                                                      
+
+                                  if (imageData[0] != undefined) {
+
+                                    return (
+
+                                      <GatsbyImage 
+                                        // @ts-ignore
+                                        image={imageData[0].childImageSharp.gatsbyImageData} 
+                                        alt=""
+                                      />
+                                    )
+                                  }
+                                })()
+                              }
                                                 </div>
                                                 <h2 className="text-4xl mb-4 font-heading">{article.frontmatter.title}</h2>
                                                 <div className="mb-4 text-indigo-200">
@@ -122,6 +161,15 @@ export const query = graphql`
               id
             }
             totalCount
+        }
+
+        allFile(filter: {internal: {mediaType: {eq: "image/png" } } } ) {
+            nodes {
+              name
+              childImageSharp {
+                gatsbyImageData
+            }
+          }
         }
     }
 `

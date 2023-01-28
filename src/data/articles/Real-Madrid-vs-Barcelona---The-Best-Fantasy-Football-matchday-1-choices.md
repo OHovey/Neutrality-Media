@@ -2,7 +2,7 @@
 title: Real Madrid vs Barcelona - The Best Fantasy Football matchday 1 choices
 author: roboman
 date: 2023-01-17
-imageUrl: ../images/ArsenalvsManUnited-Therivalrycontinues
+imageUrl: Real-Madrid-vs-Barcelona---The-Best-Fantasy-Football-matchday-1-choices.png
 articlesImageUrl: ../../images/ArsenalvsManUnited-Therivalrycontinues
 ---
 

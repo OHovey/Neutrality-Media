@@ -5,6 +5,7 @@ import { graphql } from 'gatsby';
 import Moment from 'react-moment';
 
 import Template from '../base';
+import { GatsbyImage } from 'gatsby-plugin-image';
 
 
 type Tag = {
@@ -13,6 +14,11 @@ type Tag = {
     properties: object,
     children: Array<Tag>,
     value?: string
+}
+interface ImageProps {
+    childImageSharp: {
+        gatsbyImageData: any
+    }
 }
 type Article = {
     frontmatter: {
@@ -26,14 +32,19 @@ type Article = {
     }
 }
 interface ArticleProps {
-    markdownRemark: Article
+    markdownRemark: Article,
+    allFile: {
+        nodes: Array<ImageProps>
+    }
 }
-const Article = ({ data }: PageProps<ArticleProps>) => {
+const Article = ({ data, pageContext }: PageProps<ArticleProps>) => {
 
     const [articleContent, setArticleContent] = React.useState<string>('');
 
 
     React.useEffect(() => {
+
+        // console.log(pageContext)
 
         let content: string = "";
 
@@ -70,15 +81,21 @@ const Article = ({ data }: PageProps<ArticleProps>) => {
 
     return (
         <Template>
-            <section className="pb-24" style={{backgroundImage: 'url("pstls-assets/images/blog-content/shadow-pink.png")', backgroundRepeat: 'no-repeat', backgroundSize: 'cover'}}>
-                <div className="container px-4 mx-auto">
-                    <div className="max-w-6xl mx-auto">
-                        <div className="py-24 max-w-4xl">
-                            <p className="text-indigo-500 inline">Published </p><Moment className="text-indigo-500" date={data.markdownRemark.frontmatter.date} format="D MMM YYYY" />
-                            <p className='text-indigo-500 inline'> by <strong>{data.markdownRemark.frontmatter.author}</strong></p>
-                            <h2 className="text-4xl md:text-5xl font-heading mt-4 mb-6">{data.markdownRemark.frontmatter.title}</h2>
+            <section className="bg-gradient-to-r from-red-400" style={{backgroundImage: 'url("pstls-assets/images/blog-content/shadow-pink.png")', backgroundRepeat: 'no-repeat', backgroundSize: 'cover'}}>
+                <div className="bg-gradient-to-r from-red-400">
+                    <div className="mx-auto">
+                        <div className="py-24 mx-12">
+                            <div className="mx-auto w-1/2">
+                                <GatsbyImage image={data.allFile.nodes[0].childImageSharp.gatsbyImageData} alt="" style={{ width: "50vw", height: "50vh", margin: 'auto', border: '1px solid black '  }} />
+                            </div>
+                            {/* <div className="h-1/2 w-screen top-0 left-0 absolute shadow-2xl shadow-black" /> */}
+                            <div className="pt-12 max-w-4xl mx-auto">
+                                <p className="text-indigo-500 inline">Published </p><Moment className="text-indigo-500" date={data.markdownRemark.frontmatter.date} format="D MMM YYYY" />
+                                <p className='text-indigo-500 inline'> by <strong>{data.markdownRemark.frontmatter.author}</strong></p>
+                            </div>
+                            <h2 className="text-4xl md:text-5xl font-heading mt-4 mb-6 mx-auto max-w-4xl">{data.markdownRemark.frontmatter.title}</h2>
                             <div 
-                                className='article-content'
+                                className='article-content max-w-4xl mx-auto text-justify leading-8'
                                 dangerouslySetInnerHTML={{ __html: articleContent }}
                             />
                         </div>
@@ -90,7 +107,7 @@ const Article = ({ data }: PageProps<ArticleProps>) => {
 }
 
 export const query = graphql`
-    query ArticleQuery($articleId: String!) {
+    query ArticleQuery($articleId: String!, $imageTitle: String!) {
         markdownRemark(id: {eq: $articleId}) {
             frontmatter {
               author
@@ -99,7 +116,16 @@ export const query = graphql`
             }
             html
             htmlAst
+        }
+
+        allFile(filter: {internal: {mediaType: {eq: "image/png" } } name: {eq: $imageTitle} } ) {
+            nodes {
+              name
+              childImageSharp {
+                gatsbyImageData
+            }
           }
+        }
     }
 `
 
