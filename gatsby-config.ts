@@ -36,6 +36,13 @@ const config: GatsbyConfig = {
       path: `${__dirname}/src/data/articles/`
     }
   },
+  {
+    resolve:  `gatsby-source-filesystem`,
+    options: {
+      name: `privacyPolicy`,
+      path: `${__dirname}/src/data/complience/`
+    }
+  },
   `gatsby-transformer-remark`,
   {
     resolve: `gatsby-plugin-google-gtag`,

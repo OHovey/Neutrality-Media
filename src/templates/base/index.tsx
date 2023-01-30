@@ -20,9 +20,9 @@ const Template = (props: any) => {
                 {props.children} 
             <Footer />
 
-            {typeof window !== 'undefined' && window && (
+            {/* {typeof window !== 'undefined' && window && (
                 <GDPRComplienceNotice />
-            )}
+            )} */}
 
         </main>
     )

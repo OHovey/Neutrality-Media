@@ -1,8 +1,42 @@
 import * as React from 'react';
 import Template from '../../templates/base';
+import { graphql } from 'gatsby';
+import type {PageProps} from 'gatsby';
+import { GatsbyImage } from 'gatsby-plugin-image';
 
 
-const PrivacyPolicy = () => {
+interface ImageProps {
+    name: string,
+    childImageSharp: {
+        gatsbyImageData: any
+    }
+}
+interface DataProps {
+    allFile: {
+        nodes: Array<ImageProps>
+    }
+}
+const PrivacyPolicy = ({ data }: PageProps<DataProps>) => {
+
+    const [images, setImages] = React.useState<Array<ImageProps> | null>(null);
+
+    React.useLayoutEffect(() => {
+
+        // console.log(data)
+        const ppDocs = data.allFile.nodes.filter( image => image.name.includes('Privacy policy')).sort((a, b) => {
+
+            // @ts-ignore
+            const aComparator = parseInt(a.name.split('-').pop());
+            // @ts-ignore
+            const bComparator = parseInt(b.name.split('-').pop());
+
+            if (aComparator > bComparator) return 1;
+            if (bComparator > aComparator) return -1;
+
+            return 0;
+        });
+        setImages(ppDocs);
+    }, []);
 
     return (
         <Template>
@@ -10,7 +44,7 @@ const PrivacyPolicy = () => {
 
                 <div className="bg-white border border-black w-1/2 m-auto py-12">
 
-                    <p className="w-2/3 m-auto text-3xl mb-12">Privacy Policy</p>
+                    {/* <p className="w-2/3 m-auto text-3xl mb-12">Privacy Policy</p>
 
                     <p className="w-2/3  m-auto leading-8">
                         General Data Protection Regulation (GDPR) Privacy Policy for Google Analytics
@@ -26,11 +60,27 @@ const PrivacyPolicy = () => {
                         We will update this Privacy Policy from time to time. The updated version will be effective as soon as it is accessible. We encourage you to review this Privacy Policy regularly to stay informed about how we are protecting the personal information we collect.
 
                         This Policy was last updated on 28-01-2023
-                    </p>
+                    </p> */}
+                    {images?.map( image => (
+                        <GatsbyImage image={image.childImageSharp.gatsbyImageData} alt="hi there" />
+                    ))}
                 </div>
             </section>
         </Template>
     )
 }
+
+export const query = graphql`
+    query PrivacyPolicyQuery {
+        allFile(filter: {ext: {eq: ".jpg"}}) {
+            nodes {
+                name
+                childImageSharp {
+                    gatsbyImageData
+                }
+            }
+        }
+    }
+`
 
 export default PrivacyPolicy;
