@@ -12,7 +12,7 @@ import GDPRComplienceNotice from './Complience';
 
 const Template = (props: any) => {
 
-    const complienceStatus = useScript(`https://consent.cookiebot.com/5ccba0a0-8ce1-4ebe-92d1-5f0505f3041f/cd.js`)
+    // const complienceStatus = useScript(`https://consent.cookiebot.com/5ccba0a0-8ce1-4ebe-92d1-5f0505f3041f/cd.js`)
 
     return (
         <main>
@@ -20,9 +20,9 @@ const Template = (props: any) => {
                 {props.children} 
             <Footer />
 
-            {/* {typeof window !== 'undefined' && window && (
+            {typeof window !== 'undefined' && window && (
                 <GDPRComplienceNotice />
-            )} */}
+            )}
 
         </main>
     )
