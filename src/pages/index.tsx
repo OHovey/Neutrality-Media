@@ -124,13 +124,13 @@ const IndexPage: React.FC<PageProps<HomeProps>> = ({ data }) => {
                           <span className="text-purple-800">6 min read</span>
                           <span className="mx-2">•</span>
                           <Moment className="text-purple-800" date={articles[0].frontmatter.date} format="D MMM YYYY" />
-
+                          <p className="text-purple-900">Author: <span className="font-bold">{articles[0].frontmatter.author}</span></p>
                       </div>
                       <h2 className="text-4xl mb-4 font-heading font-bold">{articles[0].frontmatter.title}</h2>
                       <p className="leading-8 mb-6">{articles[0].excerpt}</p>
                       <div className="flex items-center">
                           {/* <img className="mr-3" src={`${articles[0].frontmatter.imageUrl}`} alt="" /> */}
-                          <p>{articles[0].frontmatter.author}</p>
+                          {/* <p className="">Author: <span className="font-bold">{articles[0].frontmatter.author}</span></p> */}
                       </div>
                     </GatsbyLink>
                 </div>

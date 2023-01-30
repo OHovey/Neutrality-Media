@@ -85,19 +85,22 @@ const Article = ({ data, pageContext }: PageProps<ArticleProps>) => {
                 <div className="bg-gradient-to-r from-red-400">
                     <div className="mx-auto">
                         <div className="py-24 mx-12">
-                            <div className="mx-auto w-1/2">
-                                <GatsbyImage image={data.allFile.nodes[0]?.childImageSharp.gatsbyImageData} alt="" style={{ width: "50vw", height: "50vh", margin: 'auto', border: '1px solid black '  }} />
+                            <div className="mx-auto w-1/4">
+                                <GatsbyImage image={data.allFile.nodes[0]?.childImageSharp.gatsbyImageData} alt="" style={{ width: "30vw", height: "30vh", margin: 'auto', border: '1px solid black '  }} />
                             </div>
                             {/* <div className="h-1/2 w-screen top-0 left-0 absolute shadow-2xl shadow-black" /> */}
-                            <div className="pt-12 max-w-4xl mx-auto">
-                                <p className="text-indigo-500 inline">Published </p><Moment className="text-indigo-500" date={data.markdownRemark.frontmatter.date} format="D MMM YYYY" />
-                                <p className='text-indigo-500 inline'> by <strong>{data.markdownRemark.frontmatter.author}</strong></p>
+                            <div className="bg-white mx-24 mt-12 border border-black py-12">
+                                <div className="pt-12 max-w-4xl mx-auto">
+                                    <p className="text-indigo-500 inline">Published </p><Moment className="text-indigo-500" date={data.markdownRemark.frontmatter.date} format="D MMM YYYY" />
+                                    <p className='text-indigo-500 inline'> by <strong>{data.markdownRemark.frontmatter.author}</strong></p>
+                                </div>
+                                <h2 className="text-4xl md:text-5xl font-heading mt-4 mb-6 mx-auto max-w-4xl">{data.markdownRemark.frontmatter.title}</h2>
+                                <div className='border border-slate-400 w-1/5 mx-auto my-12' />
+                                <div 
+                                    className='article-content max-w-4xl mx-auto text-justify leading-8'
+                                    dangerouslySetInnerHTML={{ __html: articleContent }}
+                                />
                             </div>
-                            <h2 className="text-4xl md:text-5xl font-heading mt-4 mb-6 mx-auto max-w-4xl">{data.markdownRemark.frontmatter.title}</h2>
-                            <div 
-                                className='article-content max-w-4xl mx-auto text-justify leading-8'
-                                dangerouslySetInnerHTML={{ __html: articleContent }}
-                            />
                         </div>
                     </div>
                 </div>
