@@ -3243,18 +3243,10 @@ var import_functions = __toESM(require_main());
 var import_axios = __toESM(require_axios2());
 var myHandler = async (event, context) => {
   console.log("Received event:");
-  const result = await import_axios.default.get("https://api.apify.com/v2/actor-tasks/VncdzeYjbYNubPpkY/run-sync?token=apify_api_FpKFZk1nVdehSrF7HedZ8x7Cqxdnzp0T4bhK", {
+  import_axios.default.post("https://sprightly-bonbon-6b5065.netlify.app/.netlify/functions/update-and-build-background", {}, {
     headers: {
-      "Content-Type": "application/json"
+      "Authorization": `Bearer ${process.env.PERSONAL_ACCESS_TOKEN}`
     }
-  }).then((_) => {
-    import_axios.default.post("https://sprightly-bonbon-6b5065.netlify.app/.netlify/functions/update-and-build-background", {}, {
-      headers: {
-        "Authorization": `Bearer ${process.env.PERSONAL_ACCESS_TOKEN}`
-      }
-    });
-  }).catch((err) => {
-    console.log("error: " + err);
   });
   return {
     statusCode: 200

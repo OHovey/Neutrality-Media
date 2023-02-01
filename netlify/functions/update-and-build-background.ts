@@ -4,53 +4,76 @@ const fs = require('fs');
 const axios = require('axios');
 
 const { Octokit, App } = require("octokit");
+const { Configuration, OpenAIApi } = require('openai');
 
 const fetch = require('node-fetch');
 
 
 const octokit = new Octokit({ auth: process.env.GITHUB_ACCESS_TOKEN });
 
+const configuration = new Configuration({
+    apiKey: process.env.OPENAI_AUTH_TOKEN
+});
+
+const openai = new OpenAIApi(configuration);
+
+
 const fetchHeadline = async (term: string): Promise<string> => {
 
-    return await axios.post('https://api.openai.com/v1/completions', {
+    return await openai.createCompletion({
         "model": "text-ada-001",
         "prompt": `write an article headline related to the term "${term}"`,
         "temperature": 0.4
-    }, {
-        headers: {
-            "Authorization": `Bearer ${process.env.OPENAI_AUTH_TOKEN}`
-        }
-    }).then( (response) => {
-
+    }).then( response => {
         return response.data.choices[0].text
-    }).catch(function (error) {
+    }).catch(err => console.error(err))
+
+    // return await axios.post('https://api.openai.com/v1/completions', {
+    //     "model": "text-ada-001",
+    //     "prompt": `write an article headline related to the term "${term}"`,
+    //     "temperature": 0.4
+    // }, {
+    //     headers: {
+    //         "Authorization": `Bearer ${process.env.OPENAI_AUTH_TOKEN}`
+    //     }
+    // }).then( (response) => {
+
+    //     return response.data.choices[0].text
+    // }).catch(function (error) {
         
-        console.error(error);
-        return;
-    });
+    //     console.error(error);
+    //     return;
+    // });
 }
 
 
 
 const fetchArticleContent = async (term: string, headline: string): Promise<string> => {
 
-    return await axios.post('https://api.openai.com/v1/completions', {
+    return await openai.createCompletion({
         "model": "text-curie-001",
         "prompt": `write an article about this subject: "${headline}"`,
         "temperature": 0.3,
         "max_tokens": 2000
-    }, {
-        headers: {
-            "Authorization": `Bearer ${process.env.OPENAI_AUTH_TOKEN}`
-        }
-    }).then(response => {
+    }).then( response => response.data.choices[0].text )
 
-        return response.data.choices[0].text
-    }).catch(function (error) {
+    // return await axios.post('https://api.openai.com/v1/completions', {
+    //     "model": "text-curie-001",
+    //     "prompt": `write an article about this subject: "${headline}"`,
+    //     "temperature": 0.3,
+    //     "max_tokens": 2000
+    // }, {
+    //     headers: {
+    //         "Authorization": `Bearer ${process.env.OPENAI_AUTH_TOKEN}`
+    //     }
+    // }).then(response => {
 
-        console.error(error);
-        return;
-    });
+    //     return response.data.choices[0].text
+    // }).catch(function (error) {
+
+    //     console.error(error);
+    //     return;
+    // });
 }
 
 const downloadImage = async (url: string, filename: string) => {
@@ -96,18 +119,20 @@ exports.handler = async (event) => {
         }
     }).then( async _ => {
         
-    
-
         const result = await axios.get(`https://api.apify.com/v2/actor-tasks/VncdzeYjbYNubPpkY/runs/last/dataset/items?token=${process.env.APIFY_TOKEN}&status=SUCCEEDED`, {
             headers: {
                 "Content-Type": "application/json"
             }
         }).catch(err => {
+            // console.log('its an error here')
             console.log("error: " + err)
         })
 
-        
-        const { data: { login } } = await octokit.rest.users.getAuthenticated();
+        // console.log('made it here 0')
+
+        // const { data: { login } } = await octokit.rest.users.getAuthenticated();
+
+        // console.log('JUST PAST HERE');
 
         let articles = {};
 
@@ -192,32 +217,68 @@ exports.handler = async (event) => {
 
         const term: string = querys[0];
 
+        // console.log('made it here 1')
         let headline: string = (await fetchHeadline(term)).replace("\n\n", "").replace(":", " -"); 
 
+        // console.log('made it here 2')
         let article = await fetchArticleContent(term, headline);
 
         // generate image
-        const imageData = await axios.post('https://api.openai.com/v1/images/generations', {
+        // const imageData = await axios.post('https://api.openai.com/v1/images/generations', {
+        //     prompt: `An image to caption the following headline: ${headline}`,
+        //     n: 1,
+        //     size: "1024x1024"
+        // },{
+        //     headers: {
+        //         "Content-Type": "application/json",
+        //         "Authorization": `Bearer ${process.env.OPENAI_AUTH_TOKEN}`
+        //     }
+        // }).catch( err => {
+        //     console.error(err);
+        // })
+
+        // var myHeaders = new Headers();
+        // myHeaders.append("Content-Type", "application/json");
+        // myHeaders.append("Authorization", "Token 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");
+
+        // var raw = JSON.stringify({
+        //     "prompt": `An image to caption the following headline: duck`,
+        //     "n": 1,
+        //     "size": "1024x1024"
+        // });
+
+        // var requestOptions = {
+        //     method: 'POST',
+        //     headers: myHeaders,
+        //     body: raw,
+        //     redirect: 'follow'
+        // };
+
+        // const imageData = await fetch("https://api.openai.com/v1/images/generations", requestOptions)
+        //     .then(response => response)
+        //     // .then(result => {
+        //     //     console.log(result)
+        //     // })
+        //     .catch(error => console.log('error', error));
+
+        // console.log(imageData.data.data.url)
+
+        // console.log("but i did make it here!")
+
+        const imageData = await openai.createImage({
             prompt: `An image to caption the following headline: ${headline}`,
             n: 1,
             size: "1024x1024"
-        },{
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${process.env.OPENAI_AUTH_TOKEN}`
-            }
-        }).catch( err => {
-            console.error(err);
         })
 
-        // console.log(imageData.data.data.url)
+        // console.log('HERE! Im HERE')
 
         const imageUrl = imageData.data.data[0].url;
 
         // download The image
         await downloadImage(imageUrl, headline.split(' ').join('-'));
 
-        console.log("imageUrl: " + imageUrl)
+        // console.log("imageUrl: " + imageUrl)
 
         // declare some details for the markdown
         let d = new Date();
